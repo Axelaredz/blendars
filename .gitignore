@@ -1,16 +1,43 @@
-# Godot 4+ specific ignores
-.godot/
-.nomedia
-
+```
 # Godot-specific ignores
-.import/
-export.cfg
-export_credentials.cfg
+*.import
+*.uid
+export_presets.cfg
+.user
+.autoloads/
+.scenes/
 
-# Imported translations (automatically generated from CSV files)
-*.translation
+# Build artifacts
+*.exe
+*.dll
+*.so
+*.dylib
+*.a
+*.lib
+*.obj
+*.o
 
-# Mono-specific ignores
-.mono/
-data_*/
-mono_crash.*.json
+# Dependencies
+vendor/
+third_party/
+
+# Logs and temp files
+*.log
+*.tmp
+*.temp
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+```
