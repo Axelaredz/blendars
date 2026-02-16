@@ -1,16 +1,90 @@
-# Godot 4+ specific ignores
-.godot/
-.nomedia
-
+```
 # Godot-specific ignores
+.addons/
 .import/
-export.cfg
-export_credentials.cfg
+.project
+.sconsign.dblite
+*.import
+*.32.import
+*.64.import
+*.scn.import
+*.res.import
+*.tres.import
+*.tscn.import
+*.gdns.import
+*.gdnlib.import
+*.gdepp.import
+*.giparams.import
+*.godotimport.import
 
-# Imported translations (automatically generated from CSV files)
-*.translation
+# Build artifacts
+*.so
+*.dll
+*.dylib
+*.exe
+*.bin
+*.o
+*.obj
+*.a
+*.lib
 
-# Mono-specific ignores
-.mono/
-data_*/
-mono_crash.*.json
+# Dependencies
+node_modules/
+venv/
+.venv/
+__pycache__/
+*.egg-info/
+build/
+dist/
+target/
+.gradle/
+
+# Editor/IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.tmp
+*.log
+*~
+
+# System files
+.DS_Store
+Thumbs.db
+.Spotlight-V100
+.Trashes
+
+# Environment variables
+.env
+.env.local
+*.env.*
+
+# Coverage reports
+coverage/
+htmlcov/
+.coverage
+
+# Compression files
+*.zip
+*.gz
+*.tar
+*.tgz
+*.bz2
+*.xz
+*.7z
+*.rar
+*.zst
+*.lz4
+*.lzh
+*.cab
+*.arj
+*.rpm
+*.deb
+*.Z
+*.lz
+*.lzo
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.tar.zst
+```
