@@ -1,88 +1,31 @@
-# Кооперативная песочница на Godot 4.6 + Nakama
+# Yet Another Roguelike
 
-Этот проект представляет собой базовую архитектуру для кооперативной песочницы с использованием Godot 4.6 и Nakama. Включает в себя систему авторизации, лобби, матчмейкинг и сетевое взаимодействие.
+## Overview
+Yet Another Roguelike is a 3D roguelike game built with Godot 4.6. The project showcases a modern architecture for a multiplayer roguelike game with Nakama backend integration.
 
-## Структура проекта
+## Features
+- Procedurally generated dungeons
+- Turn-based combat system
+- Character progression and inventory management
+- Online multiplayer support
+- Cloud saves and leaderboards
 
-```
-/
-├── client/                 # Клиентская часть игры
-│   ├── autoload/          # Глобальные синглтоны
-│   │   ├── network_manager.gd
-│   │   ├── nakama_client.gd
-│   │   └── nakama_socket.gd
-│   ├── scenes/            # Игровые сцены
-│   │   └── lobby/
-│   │       └── lobby.tscn
-│   └── scripts/           # Скрипты для различных систем
-│       ├── lobby/
-│       │   ├── lobby_manager.gd
-│       │   └── lobby_ui.gd
-│       └── network/
-│           └── matchmaker.gd
-├── server/                # Серверная логика на Go
-│   ├── main.go
-│   └── modules/
-│       └── lobby/
-│           └── lobby_system.go
-├── shared/                # Общие ресурсы между клиентом и сервером
-├── addons/                # Дополнения для Godot
-├── .gitignore
-├── qwen.md               # Файл с описанием архитектуры для ИИ
-└── README.md             # Этот файл
-```
+## Technologies Used
+- Godot Engine 4.6
+- GDScript
+- Nakama Backend
+- SQLite (for local caching)
 
-## Технологии
+## Installation
+1. Install Godot Engine 4.6
+2. Clone this repository
+3. Open the project in Godot Editor
+4. Run the game
 
-- **Godot 4.6** - игровой движок
-- **Nakama** - бэкенд для многопользовательских игр
-- **GDScript** - язык программирования для скриптов в Godot
-- **Go** - язык для серверной логики
-- **Docker** - для контейнеризации и деплоя
+## Architecture
+The project follows a client-server architecture with the following components:
+- Client: Handles rendering, UI, and user input
+- Server: Manages game state, authentication, and multiplayer logic
+- Shared: Contains common utilities and data structures
 
-## Архитектура
-
-### Клиентская часть
-
-- **NetworkManager** - основной синглтон для управления сетевым подключением
-- **NakamaClient** - клиент для взаимодействия с Nakama API через HTTP
-- **NakamaSocket** - WebSocket соединение для реального времени
-- **LobbyManager** - управление лобби (создание, присоединение, выход)
-- **LobbyUI** - пользовательский интерфейс лобби
-- **Matchmaker** - система подбора игроков по параметрам
-
-### Серверная часть
-
-- **main.go** - точка входа серверной части
-- **lobby_system.go** - реализация системы лобби на стороне сервера
-
-## Запуск проекта
-
-### Предварительные требования
-
-- Godot 4.6
-- Nakama сервер
-- Go (для сборки серверной части)
-
-### Установка и запуск
-
-1. Установите Godot 4.6
-2. Запустите Nakama сервер
-3. Откройте проект в Godot
-4. Запустите игру
-
-Для запуска серверной части:
-
-1. Установите Go
-2. Перейдите в директорию `/server`
-3. Выполните `go build` для компиляции
-4. Запустите исполняемый файл
-
-## Особенности реализации
-
-- Все клиентские скрипты написаны на GDScript
-- Серверная логика реализована на Go
-- Используется RPC для взаимодействия между клиентом и сервером
-- WebSocket для реального времени
-- Система лобби позволяет создавать и присоединяться к играм
-- Матчмейкинг позволяет находить игры по параметрам
+For more details, see the qwen.md file.
