@@ -1,233 +1,182 @@
 extends Node
 
-# Минимальная реализация Nakama клиента для Godot
-# Вместо стороннего аддона используем прямые HTTP вызовы к Nakama API
+# Nakama клиент для Godot 4.6 используя официальный плагин
+# Этот класс оборачивает официальный Nakama GDScript API для удобства использования
 
 signal connected
 signal disconnected
 signal authentication_failed(error_message: String)
 signal session_updated(session: Dictionary)
 
+# Импортируем официальные классы Nakama
+var NakamaApi = load("res://addons/com.heroiclabs.nakama/api/NakamaAPI.gd")
+var NakamaClient = load("res://addons/com.heroiclabs.nakama/client/NakamaClient.gd")
+var NakamaSession = load("res://addons/com.heroiclabs.nakama/api/NakamaSession.gd")
+
 var server_url := "http://127.0.0.1:7350"
 var api_key := "defaultkey"
-var base_url: String = ""
-var session_token: String = ""
-var refresh_token: String = ""
-var user_id: String = ""
-var username: String = ""
+var port: int = 7350
+var ssl: bool = false
 
-var http_request: HTTPRequest
+var client = null
+var session = null
 
 func _ready():
-	http_request = HTTPRequest.new()
-	add_child(http_request)
-	http_request.request_completed.connect(_on_request_completed)
-	base_url = server_url
+	_initialize_client()
 
-func _on_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray):
-	#print("Request completed: ", result, ", code: ", response_code)
-	#var response_body = body.get_string_from_utf8()
-	#print("Response: ", response_body)
-	pass
+func _initialize_client():
+	client = NakamaClient.new(NakamaApi.new(server_url, port, api_key, ssl))
 
 # Аутентификация через устройство (fallback вариант)
 func authenticate_device(device_id: String = "", username: String = "", create: bool = true) -> Dictionary:
-	var endpoint = base_url + "/v2/account/authenticate/device"
-	var headers = [
-		"Content-Type: application/json",
-		"Authorization: Basic %s" % _encode_base64(api_key + ":")
-	]
-	
 	var device_id_final = device_id if !device_id.is_empty() else OS.get_unique_id()
-	var payload = {
-		"deviceId": device_id_final,
-		"username": username if !username.is_empty() else device_id_final,
-		"create": create
-	}.to_json()
 	
-	var result = await _make_request(endpoint, headers, payload, "POST")
-	
-	if result.has("error"):
-		authentication_failed.emit(str(result.error))
+	var result = await client.authenticate_device(device_id_final, username, create)
+	if result.is_exception():
+		authentication_failed.emit(result.get_exception().message)
 		return {}
 	
-	session_token = result.token
-	refresh_token = result.refresh_token
-	user_id = result.user_id
-	username = result.username
-	
+	session = result.get()
 	session_updated.emit({
-		"token": session_token,
-		"refresh_token": refresh_token,
-		"user_id": user_id,
-		"username": username
+		"token": session.token,
+		"refresh_token": session.refresh_token,
+		"user_id": session.user_id,
+		"username": session.username
 	})
 	
 	connected.emit()
-	return result
+	return {
+		"token": session.token,
+		"refresh_token": session.refresh_token,
+		"user_id": session.user_id,
+		"username": session.username
+	}
 
 # Аутентификация по email
 func authenticate_email(email: String, password: String, username: String = "", create: bool = true) -> Dictionary:
-	var endpoint = base_url + "/v2/account/authenticate/email"
-	var headers = [
-		"Content-Type: application/json",
-		"Authorization: Basic %s" % _encode_base64(api_key + ":")
-	]
-	
-	var payload = {
-		"email": email,
-		"password": password,
-		"username": username,
-		"create": create
-	}.to_json()
-	
-	var result = await _make_request(endpoint, headers, payload, "POST")
-	
-	if result.has("error"):
-		authentication_failed.emit(str(result.error))
+	var result = await client.authenticate_email(email, password, username, create)
+	if result.is_exception():
+		authentication_failed.emit(result.get_exception().message)
 		return {}
 	
-	session_token = result.token
-	refresh_token = result.refresh_token
-	user_id = result.user_id
-	username = result.username
-	
+	session = result.get()
 	session_updated.emit({
-		"token": session_token,
-		"refresh_token": refresh_token,
-		"user_id": user_id,
-		"username": username
+		"token": session.token,
+		"refresh_token": session.refresh_token,
+		"user_id": session.user_id,
+		"username": session.username
 	})
 	
 	connected.emit()
-	return result
+	return {
+		"token": session.token,
+		"refresh_token": session.refresh_token,
+		"user_id": session.user_id,
+		"username": session.username
+	}
 
 # Аутентификация по username
 func authenticate_username(username: String, password: String, create: bool = true) -> Dictionary:
-	var endpoint = base_url + "/v2/account/authenticate/username"
-	var headers = [
-		"Content-Type: application/json",
-		"Authorization: Basic %s" % _encode_base64(api_key + ":")
-	]
-	
-	var payload = {
-		"username": username,
-		"password": password,
-		"create": create
-	}.to_json()
-	
-	var result = await _make_request(endpoint, headers, payload, "POST")
-	
-	if result.has("error"):
-		authentication_failed.emit(str(result.error))
+	var result = await client.authenticate_username(username, password, create)
+	if result.is_exception():
+		authentication_failed.emit(result.get_exception().message)
 		return {}
 	
-	session_token = result.token
-	refresh_token = result.refresh_token
-	user_id = result.user_id
-	username = result.username
-	
+	session = result.get()
 	session_updated.emit({
-		"token": session_token,
-		"refresh_token": refresh_token,
-		"user_id": user_id,
-		"username": result.username
+		"token": session.token,
+		"refresh_token": session.refresh_token,
+		"user_id": session.user_id,
+		"username": session.username
 	})
 	
 	connected.emit()
-	return result
+	return {
+		"token": session.token,
+		"refresh_token": session.refresh_token,
+		"user_id": session.user_id,
+		"username": session.username
+	}
 
 # Получить информацию о пользователе
 func get_account() -> Dictionary:
-	if session_token.is_empty():
+	if not session:
 		printerr("Нет активной сессии для получения аккаунта")
 		return {}
 	
-	var endpoint = base_url + "/v2/account"
-	var headers = [
-		"Content-Type: application/json",
-		"Authorization: Bearer %s" % session_token
-	]
+	var result = await client.get_account(session)
+	if result.is_exception():
+		printerr("Ошибка получения аккаунта: ", result.get_exception().message)
+		return {}
 	
-	return await _make_request(endpoint, headers, "", "GET")
+	var account = result.get()
+	return {
+		"user": {
+			"id": account.id,
+			"username": account.username,
+			"display_name": account.display_name,
+			"avatar_url": account.avatar_url,
+			"lang_tag": account.lang_tag,
+			"location": account.location,
+			"timezone": account.timezone,
+			"metadata": account.metadata,
+			"facebook_id": account.facebook_id,
+			"google_id": account.google_id,
+			"gamecenter_id": account.gamecenter_id,
+			"steam_id": account.steam_id,
+			"online": account.online,
+			"edge_count": account.edge_count,
+			"create_time": account.create_time,
+			"update_time": account.update_time
+		}
+	}
 
 # Вызов RPC функции
 func rpc(id: String, payload: String = "") -> Dictionary:
-	if session_token.is_empty():
+	if not session:
 		printerr("Нет активной сессии для RPC вызова")
 		return {}
 	
-	var endpoint = base_url + "/v2/rpc/%s" % id
-	var headers = [
-		"Content-Type: application/json",
-		"Authorization: Bearer %s" % session_token
-	]
+	var result = await client.rpc_func(session, id, payload)
+	if result.is_exception():
+		printerr("Ошибка RPC вызова: ", result.get_exception().message)
+		return {}
 	
-	var json_payload = ""
-	if !payload.is_empty():
-		json_payload = payload.to_json()
-	else:
-		json_payload = {}.to_json()
-	
-	return await _make_request(endpoint, headers, json_payload, "POST")
+	var rpc_response = result.get()
+	return {
+		"payload": rpc_response.payload,
+		"response": rpc_response
+	}
 
-# Создать сокетное соединение (заглушка - для полноценной реализации потребуется WebSocket)
-func create_socket_connection() -> NakamaSocket:
-	return NakamaSocket.new(base_url.replace("http", "ws"), session_token)
-
-# Внутренний метод для выполнения HTTP запросов
-func _make_request(url: String, headers: Array, body: String, method: String) -> Dictionary:
-	# Устанавливаем таймаут
-	http_request.timeout = 10
-	
-	var request_headers = headers.duplicate()
-	
-	var body_bytes = []
-	if body != "":
-		body_bytes = body.to_utf8_buffer()
-	
-	var error = await http_request.request(url, request_headers, method, body_bytes)
-	
-	if error != OK:
-		return {"error": "Network request failed with error code: %d" % error}
-	
-	# Ждем завершения запроса
-	var result = await http_request.request_completed
-	
-	if result[0] != HTTPRequest.RESULT_SUCCESS:
-		return {"error": "Request failed with result: %d" % result[0]}
-	
-	var response_code = result[1]
-	var response_body = result[3].get_string_from_utf8()
-	
-	# Проверяем успешность запроса
-	if response_code >= 200 and response_code < 300:
-		# Пытаемся распарсить JSON ответ
-		var json_result = JSON.parse_string(response_body)
-		if json_result != null:
-			return json_result
-		else:
-			return {"error": "Failed to parse JSON response", "raw_response": response_body}
-	else:
-		return {"error": "Request failed with status code: %d, body: %s" % [response_code, response_body]}
-
-# Вспомогательная функция для Base64 кодирования
-func _encode_base64(text: String) -> String:
-	return text.to_utf8_buffer().to_base64()
+# Создать сокетное соединение
+func create_socket_connection():
+	var NakamaSocket = load("res://addons/com.heroiclabs.nakama/socket/NakamaSocket.gd")
+	return NakamaSocket.new(client.http_adapter.base_url.replace("http", "ws"), session.token)
 
 # Проверка валидности сессии
 func is_session_valid() -> bool:
-	return !session_token.is_empty()
+	return session != null and not session.is_expired()
 
-# Обновление сессии (не реализовано в этой версии)
+# Обновление сессии
 func refresh_session():
-	# Здесь должна быть реализация обновления токена через refresh_token
-	pass
+	if not session or not session.can_refresh():
+		printerr("Сессия не может быть обновлена")
+		return
+	
+	var result = await client.session_refresh(session)
+	if result.is_exception():
+		printerr("Ошибка обновления сессии: ", result.get_exception().message)
+		return
+	
+	session = result.get()
+	session_updated.emit({
+		"token": session.token,
+		"refresh_token": session.refresh_token,
+		"user_id": session.user_id,
+		"username": session.username
+	})
 
 # Отключение
 func disconnect():
-	session_token = ""
-	refresh_token = ""
-	user_id = ""
-	username = ""
+	session = null
 	disconnected.emit()
