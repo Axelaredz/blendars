@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://c5to1kigqj24v"]
+
+[ext_resource type="Script" uid="uid://baw43i3g1i1cd" path="res://client/ui/components/CyberButton.gd" id="1_tuvvl"]
+
+[node name="CyberButton" type="Button" unique_id=1494714921]
+script = ExtResource("1_tuvvl")
+
+[node name="GlitchOverlay" type="ColorRect" parent="." unique_id=1254878167]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 1

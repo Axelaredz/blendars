@@ -1,0 +1,42 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+run/main_scene="uid://dfcvnvndr6rso"
+config/features=PackedStringArray("4.6")
+
+[autoload]
+
+NetworkManager="*res://core/autoload/network_manager.gd"
+GDAIMCPRuntime="*res://addons/gdai-mcp-plugin-godot/gdai_mcp_runtime.gd"
+Scenes="*uid://piu4qtd0whgs"
+SceneManager="*uid://2iy8wfgenjka"
+Nakama="*uid://bkgt8drgka7yy"
+
+[dotnet]
+
+project/assembly_name="Blendars"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/com.heroiclabs.nakama/plugin.cfg", "res://addons/gdai-mcp-plugin-godot/plugin.cfg", "res://addons/scene_manager/plugin.cfg")
+
+[gui]
+
+theme/default_font_size=16
+
+[physics]
+
+3d/physics_engine="Jolt Physics"
+
+[rendering]
+
+rendering_device/driver.windows="d3d12"

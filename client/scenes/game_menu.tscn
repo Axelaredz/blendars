@@ -1,0 +1,343 @@
+[gd_scene format=3 uid="uid://c3dmx2qyw5n8h"]
+
+[ext_resource type="Script" uid="uid://dygvu5m2l55w8" path="res://client/scenes/game_menu.gd" id="1_main"]
+[ext_resource type="Theme" uid="uid://km83cj2cr8lj" path="res://client/ui/themes/CyberpunkTheme.tres" id="2_theme"]
+[ext_resource type="Script" uid="uid://bviilpa8uu51m" path="res://client/ui/CyberpunkButton.gd" id="3_button"]
+[ext_resource type="Shader" uid="uid://cjxwquh5qt78m" path="res://client/shaders/PostProcessing.gdshader" id="4_post"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
+sky_top_color = Color(0.129, 0.129, 0.157, 1)
+sky_horizon_color = Color(0.157, 0.157, 0.212, 1)
+ground_bottom_color = Color(0.098, 0.098, 0.129, 1)
+ground_horizon_color = Color(0.157, 0.157, 0.212, 1)
+
+[sub_resource type="Sky" id="Sky_1"]
+sky_material = SubResource("ProceduralSkyMaterial_1")
+
+[sub_resource type="Environment" id="Environment_1"]
+background_mode = 2
+sky = SubResource("Sky_1")
+ambient_light_source = 2
+ambient_light_color = Color(0.384, 0.447, 0.643, 1)
+ambient_light_energy = 0.4
+tonemap_mode = 2
+glow_enabled = true
+glow_intensity = 1.2
+glow_strength = 1.1
+glow_bloom = 0.3
+glow_blend_mode = 0
+glow_hdr_threshold = 0.8
+adjustment_enabled = true
+adjustment_contrast = 1.15
+adjustment_saturation = 1.2
+
+[sub_resource type="BoxMesh" id="FloorMesh"]
+size = Vector3(30, 0.2, 30)
+
+[sub_resource type="StandardMaterial3D" id="FloorMaterial"]
+albedo_color = Color(0.129, 0.129, 0.157, 1)
+metallic = 0.4
+roughness = 0.7
+
+[sub_resource type="BoxMesh" id="WallMesh"]
+size = Vector3(30, 12, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="CeilingMaterial"]
+albedo_color = Color(0.098, 0.098, 0.129, 1)
+metallic = 0.1
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="WallMaterial"]
+albedo_color = Color(0.267, 0.278, 0.353, 1)
+metallic = 0.2
+roughness = 0.85
+
+[sub_resource type="BoxMesh" id="NeonBarMesh"]
+size = Vector3(0.1, 0.05, 15)
+
+[sub_resource type="StandardMaterial3D" id="NeonPinkMaterial"]
+emission_enabled = true
+emission = Color(1, 0.475, 0.776, 1)
+emission_energy_multiplier = 4.0
+
+[sub_resource type="StandardMaterial3D" id="NeonBlueMaterial"]
+emission_enabled = true
+emission = Color(0.545, 0.914, 0.992, 1)
+emission_energy_multiplier = 4.0
+
+[sub_resource type="CylinderMesh" id="PillarMesh"]
+top_radius = 0.3
+bottom_radius = 0.4
+height = 12.0
+
+[sub_resource type="StandardMaterial3D" id="PillarMaterial"]
+albedo_color = Color(0.267, 0.278, 0.353, 1)
+metallic = 0.5
+roughness = 0.6
+emission_enabled = true
+emission = Color(0.745, 0.576, 0.976, 1)
+emission_energy_multiplier = 0.8
+
+[sub_resource type="CylinderMesh" id="PlatformMesh"]
+top_radius = 2.0
+bottom_radius = 2.5
+height = 0.3
+
+[sub_resource type="StandardMaterial3D" id="PlatformMaterial"]
+albedo_color = Color(0.314, 0.98, 0.482, 1)
+metallic = 0.7
+roughness = 0.4
+emission_enabled = true
+emission = Color(0.314, 0.98, 0.482, 1)
+emission_energy_multiplier = 1.5
+
+[sub_resource type="BoxMesh" id="CubeMesh"]
+size = Vector3(1.5, 1.5, 1.5)
+
+[sub_resource type="StandardMaterial3D" id="CubeMaterial"]
+albedo_color = Color(1, 0.475, 0.776, 1)
+metallic = 0.6
+roughness = 0.2
+emission_enabled = true
+emission = Color(1, 0.475, 0.776, 1)
+emission_energy_multiplier = 3.0
+
+[sub_resource type="ShaderMaterial" id="PostProcessMaterial"]
+shader = ExtResource("4_post")
+shader_parameter/chromatic_aberration = 0.002
+shader_parameter/noise_amount = 0.06
+shader_parameter/scanline_amount = 0.1
+shader_parameter/vignette_amount = 0.3
+shader_parameter/glitch_amount = 0.03
+shader_parameter/time_scale = 1.0
+
+[node name="MainMenu3D" type="Node3D" unique_id=395606158]
+script = ExtResource("1_main")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2099716916]
+environment = SubResource("Environment_1")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=89463944]
+transform = Transform3D(0.866025, -0.353553, 0.353553, 0, 0.707107, 0.707107, -0.5, -0.612372, 0.612372, 0, 8, 0)
+light_color = Color(0.6, 0.6, 0.8, 1)
+light_energy = 0.3
+shadow_enabled = true
+
+[node name="Floor" type="MeshInstance3D" parent="." unique_id=192372885]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+mesh = SubResource("FloorMesh")
+surface_material_override/0 = SubResource("FloorMaterial")
+
+[node name="Ceiling" type="MeshInstance3D" parent="." unique_id=326383313]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.9, 0)
+mesh = SubResource("WallMesh")
+surface_material_override/0 = SubResource("CeilingMaterial")
+
+[node name="WallBack" type="MeshInstance3D" parent="." unique_id=110785148]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, -15)
+mesh = SubResource("WallMesh")
+surface_material_override/0 = SubResource("WallMaterial")
+
+[node name="WallFront" type="MeshInstance3D" parent="." unique_id=207997428]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 15)
+mesh = SubResource("WallMesh")
+surface_material_override/0 = SubResource("WallMaterial")
+
+[node name="WallLeft" type="MeshInstance3D" parent="." unique_id=1403635778]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -15, 6, 0)
+mesh = SubResource("WallMesh")
+surface_material_override/0 = SubResource("WallMaterial")
+
+[node name="WallRight" type="MeshInstance3D" parent="." unique_id=1009761493]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 15, 6, 0)
+mesh = SubResource("WallMesh")
+surface_material_override/0 = SubResource("WallMaterial")
+
+[node name="NeonBars" type="Node3D" parent="." unique_id=1839163947]
+
+[node name="NeonBar1" type="MeshInstance3D" parent="NeonBars" unique_id=1827508268]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 5.5, -10)
+mesh = SubResource("NeonBarMesh")
+surface_material_override/0 = SubResource("NeonPinkMaterial")
+
+[node name="NeonBar2" type="MeshInstance3D" parent="NeonBars" unique_id=2032998220]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 5.5, -10)
+mesh = SubResource("NeonBarMesh")
+surface_material_override/0 = SubResource("NeonBlueMaterial")
+
+[node name="NeonBar3" type="MeshInstance3D" parent="NeonBars" unique_id=1176329248]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 5.5, 10)
+mesh = SubResource("NeonBarMesh")
+surface_material_override/0 = SubResource("NeonPinkMaterial")
+
+[node name="NeonBar4" type="MeshInstance3D" parent="NeonBars" unique_id=551525910]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 5.5, 10)
+mesh = SubResource("NeonBarMesh")
+surface_material_override/0 = SubResource("NeonBlueMaterial")
+
+[node name="Pillars" type="Node3D" parent="." unique_id=1700709489]
+
+[node name="Pillar1" type="MeshInstance3D" parent="Pillars" unique_id=598028699]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 6, -8)
+mesh = SubResource("PillarMesh")
+surface_material_override/0 = SubResource("PillarMaterial")
+
+[node name="Pillar2" type="MeshInstance3D" parent="Pillars" unique_id=1368774105]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 6, -8)
+mesh = SubResource("PillarMesh")
+surface_material_override/0 = SubResource("PillarMaterial")
+
+[node name="Pillar3" type="MeshInstance3D" parent="Pillars" unique_id=1592636780]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 6, 8)
+mesh = SubResource("PillarMesh")
+surface_material_override/0 = SubResource("PillarMaterial")
+
+[node name="Pillar4" type="MeshInstance3D" parent="Pillars" unique_id=700398183]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 6, 8)
+mesh = SubResource("PillarMesh")
+surface_material_override/0 = SubResource("PillarMaterial")
+
+[node name="Platform" type="MeshInstance3D" parent="." unique_id=945427755]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+mesh = SubResource("PlatformMesh")
+surface_material_override/0 = SubResource("PlatformMaterial")
+
+[node name="Cube" type="MeshInstance3D" parent="." unique_id=1718985218]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+mesh = SubResource("CubeMesh")
+surface_material_override/0 = SubResource("CubeMaterial")
+
+[node name="OmniLightCyan" type="OmniLight3D" parent="." unique_id=430193243]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+light_color = Color(0.545, 0.914, 0.992, 1)
+light_energy = 2.5
+omni_range = 8.0
+
+[node name="OmniLightPink" type="OmniLight3D" parent="." unique_id=405125393]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 4, -3)
+light_color = Color(1, 0.475, 0.776, 1)
+light_energy = 2.0
+omni_range = 6.0
+
+[node name="OmniLightPurple" type="OmniLight3D" parent="." unique_id=1838068416]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 4, 3)
+light_color = Color(0.745, 0.576, 0.976, 1)
+light_energy = 2.0
+omni_range = 6.0
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1994737274]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 4, 12)
+fov = 60.0
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=1432176611]
+
+[node name="MainMenuPanel" type="PanelContainer" parent="UI" unique_id=1214765268]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -280.0
+offset_right = 200.0
+offset_bottom = 280.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/MainMenuPanel" unique_id=383106466]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="VBox" type="VBoxContainer" parent="UI/MainMenuPanel/MarginContainer" unique_id=1270704673]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="TitleLabel" type="Label" parent="UI/MainMenuPanel/MarginContainer/VBox" unique_id=1094529616]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "NEON ARENA"
+horizontal_alignment = 1
+
+[node name="TitleGlow" type="Label" parent="UI/MainMenuPanel/MarginContainer/VBox" unique_id=447797609]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.545, 0.914, 0.992, 0.6)
+theme_override_font_sizes/font_size = 12
+text = "━━ COOPERATIVE SANDBOX ━━"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="UI/MainMenuPanel/MarginContainer/VBox" unique_id=1655861736]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="ButtonsVBox" type="VBoxContainer" parent="UI/MainMenuPanel/MarginContainer/VBox" unique_id=799364749]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="PlayButton" type="Button" parent="UI/MainMenuPanel/MarginContainer/VBox/ButtonsVBox" unique_id=976387348]
+custom_minimum_size = Vector2(0, 55)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "►  ИГРАТЬ"
+script = ExtResource("3_button")
+
+[node name="OptionsButton" type="Button" parent="UI/MainMenuPanel/MarginContainer/VBox/ButtonsVBox" unique_id=1291676712]
+custom_minimum_size = Vector2(0, 55)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "⚙  НАСТРОЙКИ"
+script = ExtResource("3_button")
+
+[node name="SkinsButton" type="Button" parent="UI/MainMenuPanel/MarginContainer/VBox/ButtonsVBox" unique_id=478416388]
+custom_minimum_size = Vector2(0, 55)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "◈  СКИНЫ"
+script = ExtResource("3_button")
+
+[node name="QuitButton" type="Button" parent="UI/MainMenuPanel/MarginContainer/VBox/ButtonsVBox" unique_id=1495112072]
+custom_minimum_size = Vector2(0, 55)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "✖  ВЫХОД"
+script = ExtResource("3_button")
+
+[node name="Spacer" type="Control" parent="UI/MainMenuPanel/MarginContainer/VBox" unique_id=1974398841]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VersionLabel" type="Label" parent="UI/MainMenuPanel/MarginContainer/VBox" unique_id=850170947]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.384, 0.447, 0.643, 0.7)
+theme_override_font_sizes/font_size = 11
+text = "v0.1.0 | ALPHA BUILD"
+horizontal_alignment = 1
+
+[node name="PostProcess" type="ColorRect" parent="UI" unique_id=1018929664]
+material = SubResource("PostProcessMaterial")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+
+[node name="MainMenuOverlay" type="CanvasLayer" parent="." unique_id=1234567890]
+
+[node name="MainMenuContainer" type="Control" parent="MainMenuOverlay" unique_id=1234567891]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

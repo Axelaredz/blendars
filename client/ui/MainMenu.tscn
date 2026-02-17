@@ -1,0 +1,84 @@
+[gd_scene format=3 uid="uid://dfcvnvndr6rso"]
+
+[ext_resource type="Script" uid="uid://c0y6goj1k166x" path="res://client/ui/MainMenu.gd" id="1_2u53e"]
+[ext_resource type="Theme" uid="uid://exo2theme123" path="res://client/ui/themes/Exo2Theme.tres" id="2_d40x0"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_2u53e"]
+top_radius = 5.0
+bottom_radius = 5.0
+height = 0.5
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_2u53e"]
+height = 0.5
+radius = 5.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_2u53e"]
+size = Vector3(2, 2, 2)
+
+[node name="MainMenu" type="Node3D" unique_id=2006498295]
+script = ExtResource("1_2u53e")
+
+[node name="Platform" type="StaticBody3D" parent="." unique_id=2045494928]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Platform" unique_id=61602342]
+mesh = SubResource("CylinderMesh_2u53e")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Platform" unique_id=506207780]
+shape = SubResource("CylinderShape3D_2u53e")
+
+[node name="Cube" type="MeshInstance3D" parent="Platform" unique_id=1073268865]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+mesh = SubResource("BoxMesh_2u53e")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=376101910]
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=866423707]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 5)
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=1003925710]
+
+[node name="MenuPanel" type="PanelContainer" parent="UI" unique_id=43052467]
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 280.0
+theme = ExtResource("2_d40x0")
+
+[node name="VBox" type="VBoxContainer" parent="UI/MenuPanel" unique_id=163627765]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="PlayButton" type="Button" parent="UI/MenuPanel/VBox" unique_id=218555011]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "PLAY"
+
+[node name="SettingsButton" type="Button" parent="UI/MenuPanel/VBox" unique_id=659054110]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "SETTINGS"
+
+[node name="QuitButton" type="Button" parent="UI/MenuPanel/VBox" unique_id=266070859]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "QUIT"
+
+[node name="TitleLabel" type="Label" parent="UI" unique_id=929898835]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+theme = ExtResource("2_d40x0")
+text = "BLEND ARS"
+horizontal_alignment = 1
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1350362491]
+
+[node name="NeonLight" type="OmniLight3D" parent="." unique_id=1013230607]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 3, 0)
+light_energy = 2.0

@@ -1,0 +1,41 @@
+[gd_resource type="Theme" format=3 uid="uid://exo2theme123"]
+
+[ext_resource type="FontFile" uid="uid://exo2regular" path="res://client/ui/fonts/Exo2-Regular.woff2" id="1"]
+[ext_resource type="FontFile" uid="uid://eiwet0sgsm5" path="res://client/ui/fonts/Exo2-SemiBoldItalic.woff2" id="2"]
+[ext_resource type="FontFile" uid="uid://8cmian6nypfy" path="res://client/ui/fonts/Exo2-BoldItalic.woff2" id="3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
+bg_color = Color(0.945, 0.98, 0.549, 0.1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.945, 0.98, 0.549, 1)
+corner_radius_top_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_normal"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.384, 0.447, 0.643, 1)
+corner_radius_top_right = 4
+corner_radius_bottom_left = 4
+
+[resource]
+default_font = ExtResource("1")
+default_font_size = 16
+Button/colors/font_color = Color(0.384, 0.447, 0.643, 1)
+Button/colors/font_hover_color = Color(0.945, 0.98, 0.549, 1)
+Button/colors/font_pressed_color = Color(1, 0.722, 0.424, 1)
+Button/font_sizes/font_size = 18
+Button/fonts/font = ExtResource("2")
+Button/styles/hover = SubResource("StyleBoxFlat_button_hover")
+Button/styles/normal = SubResource("StyleBoxFlat_button_normal")
+Label/colors/font_color = Color(0.973, 0.973, 0.949, 1)
+Label/font_sizes/font_size = 16
+Label/fonts/font = ExtResource("3")
+TitleLabel/colors/font_color = Color(0.973, 0.973, 0.949, 1)
+TitleLabel/font_sizes/font_size = 32

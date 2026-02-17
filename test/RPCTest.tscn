@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://rpc_test_scene"]
+
+[ext_resource type="Script" uid="uid://rpc_test_script" path="res://test/RPCTest.gd" id="1_xyz789"]
+
+[node name="RPCTest" type="Control" unique_id=1854262606]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_xyz789")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1364182168]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+
+[node name="Title" type="Label" parent="VBoxContainer" unique_id=1806657873]
+layout_mode = 2
+text = "RPC Test - Тестирование RPC вызовов Nakama"
+horizontal_alignment = 1
+
+[node name="ServerInfo" type="Label" parent="VBoxContainer" unique_id=1806657874]
+layout_mode = 2
+text = "Сервер: 45.150.9.103:7350"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1806657875]
+layout_mode = 2
+
+[node name="RPCIdLabel" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1806657876]
+layout_mode = 2
+text = "RPC ID:"
+
+[node name="RPCIdInput" type="LineEdit" parent="VBoxContainer/HBoxContainer" unique_id=1806657877]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "health"
+placeholder_text = "Введите ID RPC функции"
+
+[node name="StatusLabel" type="Label" parent="VBoxContainer" unique_id=1806657878]
+layout_mode = 2
+text = "Ожидание..."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="TestButton" type="Button" parent="VBoxContainer" unique_id=1806657879]
+layout_mode = 2
+text = "Подключиться и тестировать"
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer" unique_id=1806657880]
+layout_mode = 2
+
+[node name="LogLabel" type="Label" parent="VBoxContainer" unique_id=2103893869]
+layout_mode = 2
+text = "Лог:"
+autowrap_mode = 2
