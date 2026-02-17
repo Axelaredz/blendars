@@ -1,0 +1,69 @@
+version: "3.8"
+
+services:
+  # PostgreSQL
+  postgres:
+    image: postgres:15-alpine
+    container_name: blendars_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: nakama
+      POSTGRES_USER: nakama
+      POSTGRES_PASSWORD: dev_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - nakama_network
+
+  # Redis
+  redis:
+    image: redis:7-alpine
+    container_name: blendars_redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - nakama_network
+
+  # Nakama (using custom image with modules)
+  nakama:
+    image: heroiclabs/nakama:3.23.1
+    container_name: blendars_nakama
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "7349:7349"
+      - "7350:7350"
+      - "7351:7351"
+    environment:
+      - NAKAMA_CONFIGURATION__DATABASE__ADDRESS=postgres:5432
+      - NAKAMA_CONFIGURATION__DATABASE__PASSWORD=dev_password
+      - NAKAMA_CONFIGURATION__REDIS__ADDRESS=redis:6379
+      - NAKAMA_CONFIGURATION__SESSION__ENCRYPTKEY=0123456789abcdef0123456789abcdef
+      - NAKAMA_CONFIGURATION__PROTOCOL__KEY=defaultkey
+    volumes:
+      - ./nakama_modules:/var/lib/nakama/modules
+    networks:
+      - nakama_network
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider -q http://localhost:7350/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  nakama_network:
+    driver: bridge

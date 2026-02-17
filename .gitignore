@@ -1,90 +1,32 @@
-```
-# Godot-specific ignores
-.addons/
-.import/
-.project
-.sconsign.dblite
-*.import
-*.32.import
-*.64.import
-*.scn.import
-*.res.import
-*.tres.import
-*.tscn.import
-*.gdns.import
-*.gdnlib.import
-*.gdepp.import
-*.giparams.import
-*.godotimport.import
+# Godot 4+ specific ignores
+.godot/
 
-# Build artifacts
-*.so
-*.dll
-*.dylib
-*.exe
-*.bin
-*.o
-*.obj
-*.a
-*.lib
+# ============================================
+# Sensitive configuration files
+# ============================================
 
-# Dependencies
-node_modules/
-venv/
-.venv/
-__pycache__/
-*.egg-info/
-build/
-dist/
-target/
-.gradle/
+# Environment variables with secrets
+infrastructure/.env
 
-# Editor/IDE files
+# Local auth tokens (saved session)
+user://auth.save
+
+# SSL certificates and keys
+*.crt
+*.key
+*.pem
+
+# IDE and editor files
 .vscode/
 .idea/
 *.swp
 *.swo
-*.tmp
-*.log
 *~
 
-# System files
+# OS specific
 .DS_Store
 Thumbs.db
-.Spotlight-V100
-.Trashes
 
-# Environment variables
-.env
-.env.local
-*.env.*
-
-# Coverage reports
-coverage/
-htmlcov/
-.coverage
-
-# Compression files
-*.zip
-*.gz
-*.tar
-*.tgz
-*.bz2
-*.xz
-*.7z
-*.rar
-*.zst
-*.lz4
-*.lzh
-*.cab
-*.arj
-*.rpm
-*.deb
-*.Z
-*.lz
-*.lzo
-*.tar.gz
-*.tar.bz2
-*.tar.xz
-*.tar.zst
-```
+# Build outputs
+export/
+build/

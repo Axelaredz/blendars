@@ -1,0 +1,28 @@
+{
+  "name": "blendars-nakama-modules",
+  "version": "1.0.0",
+  "description": "Nakama server modules for Blendars game",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "dev": "ts-node src/main.ts",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@heroiclabs/nakama-js": "^2.5.0",
+    "@nakama/ts-runtime": "^1.0.0",
+    "axios": "^1.6.0",
+    "telegram-bot-api": "^2.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.0",
+    "ts-node": "^10.9.0",
+    "jest": "^29.7.0",
+    "@types/jest": "^29.5.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
