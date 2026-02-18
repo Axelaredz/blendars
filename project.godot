@@ -13,13 +13,20 @@ config_version=5
 run/main_scene="uid://dfcvnvndr6rso"
 config/features=PackedStringArray("4.6")
 
+[audio]
+
+buses/default_bus_layout="uid://bw16niqeh6a2w"
+
 [autoload]
 
 NetworkManager="*res://core/autoload/network_manager.gd"
 GDAIMCPRuntime="*res://addons/gdai-mcp-plugin-godot/gdai_mcp_runtime.gd"
-Scenes="*uid://piu4qtd0whgs"
-SceneManager="*uid://2iy8wfgenjka"
 Nakama="*uid://bkgt8drgka7yy"
+PhantomCameraManager="*uid://duq6jhf6unyis"
+AppConfig="*uid://cjke6crjg14a0"
+SceneLoader="*uid://cbwmrnp0af35y"
+ProjectMusicController="*uid://r5t485lr3p7t"
+ProjectUISoundController="*uid://cc37235kj4384"
 
 [dotnet]
 
@@ -27,11 +34,26 @@ project/assembly_name="Blendars"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/com.heroiclabs.nakama/plugin.cfg", "res://addons/gdai-mcp-plugin-godot/plugin.cfg", "res://addons/scene_manager/plugin.cfg")
+enabled=PackedStringArray("res://addons/com.heroiclabs.nakama/plugin.cfg", "res://addons/gdai-mcp-plugin-godot/plugin.cfg", "res://addons/maaacks_menus_template/plugin.cfg", "res://addons/maaacks_options_menus/plugin.cfg", "res://addons/phantom_camera/plugin.cfg")
 
 [gui]
 
 theme/default_font_size=16
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://addons/maaacks_menus_template/base/translations/menus_translations.en.translation", "res://addons/maaacks_menus_template/base/translations/menus_translations.fr.translation", "res://addons/maaacks_options_menus/base/translations/menus_translations.en.translation", "res://addons/maaacks_options_menus/base/translations/menus_translations.fr.translation")
+
+[maaacks_menus_template]
+
+disable_install_audio_busses=true
+disable_update_check=false
+disable_install_wizard=true
+
+[maaacks_options_menus]
+
+disable_update_check=false
+disable_install_wizard=true
 
 [physics]
 
