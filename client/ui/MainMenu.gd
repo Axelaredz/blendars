@@ -1,58 +1,53 @@
-extends Node3D
+extends MainMenu
+## Blendars Main Menu — cyberpunk sci-fi style
+## Extends Maaack's MainMenu base class for full addon functionality.
 
-@export var rotation_speed: float = 0.15
-
-@onready var platform: Node3D = $Platform
-@onready var play_button: Button = $UI/MenuPanel/VBox/PlayButton
-@onready var settings_button: Button = $UI/MenuPanel/VBox/SettingsButton
-@onready var quit_button: Button = $UI/MenuPanel/VBox/QuitButton
-@onready var title_label: Label = $UI/TitleLabel
-@onready var menu_panel: PanelContainer = $UI/MenuPanel
-
-var buttons: Array[Button]
+@onready var _title_label: Label = $TitleLabel
+@onready var _menu_panel: PanelContainer = $MenuContainer/MenuHBox/LeftPanel
+@onready var _buttons_box: BoxContainer = %MenuButtonsBoxContainer
 
 func _ready() -> void:
-	# Загружаем шрифты с кириллицей
-	var _font_semibold_italic = load("res://client/ui/fonts/Exo2-SemiBoldItalic.woff2")
-	var _font_bold_italic = load("res://client/ui/fonts/Exo2-BoldItalic.woff2")
-	
-	buttons = [play_button, settings_button, quit_button]
-	
-	# Применяем шрифты - кнопки: SemiBold Italic (500), заголовок: Bold Italic (700)
-	for btn in buttons:
-		btn.add_theme_font_override("font", _font_semibold_italic)
-	
-	title_label.add_theme_font_override("font", _font_bold_italic)
-	
-	# Подключаем кнопки
-	play_button.pressed.connect(_on_play_pressed)
-	settings_button.pressed.connect(_on_settings_pressed)
-	quit_button.pressed.connect(_on_quit_pressed)
-	
+	# Packed scenes for Options и Credits из аддона
+	options_packed_scene = load("res://addons/maaacks_menus_template/examples/scenes/windows/main_menu_options_window.tscn")
+	credits_packed_scene = load("res://addons/maaacks_menus_template/examples/scenes/windows/main_menu_credits_window.tscn")
+
+	# Применяем шрифты
+	var font_bold := load("res://client/ui/fonts/Exo2-BoldItalic.woff2") as FontFile
+	var font_semi := load("res://client/ui/fonts/Exo2-SemiBoldItalic.woff2") as FontFile
+
+	if _title_label and font_bold:
+		_title_label.add_theme_font_override("font", font_bold)
+		_title_label.add_theme_font_size_override("font_size", 80)
+
+	if _buttons_box and font_semi:
+		for child in _buttons_box.get_children():
+			if child is Button:
+				child.add_theme_font_override("font", font_semi)
+				child.add_theme_font_size_override("font_size", 18)
+
+	# Вызываем родительский ready (скрывает кнопки без сцен)
+	super._ready()
+
 	# Анимация появления
-	_animate_entrance()
+	_play_entrance()
 
-func _process(delta: float) -> void:
-	if platform:
-		platform.rotate_y(rotation_speed * delta)
+func _play_entrance() -> void:
+	if _title_label:
+		_title_label.modulate.a = 0.0
+	if _menu_panel:
+		_menu_panel.modulate.a = 0.0
 
-func _animate_entrance() -> void:
-	title_label.modulate.a = 0.0
-	menu_panel.modulate.a = 0.0
-	
-	var tween = create_tween().set_parallel(true)
-	tween.tween_property(title_label, "modulate:a", 1.0, 0.5)
-	tween.tween_property(menu_panel, "modulate:a", 1.0, 0.4).set_delay(0.3)
-	
-	for i in buttons.size():
-		buttons[i].modulate.a = 0.0
-		tween.tween_property(buttons[i], "modulate:a", 1.0, 0.3).set_delay(0.5 + i * 0.15)
+	var tween := create_tween().set_parallel(true)
 
-func _on_play_pressed() -> void:
-	print("Переход на AuthScreen (скоро)")
+	if _title_label:
+		tween.tween_property(_title_label, "modulate:a", 1.0, 0.7)
 
-func _on_settings_pressed() -> void:
-	print("Переход на SettingsScreen (скоро)")
+	if _menu_panel:
+		tween.tween_property(_menu_panel, "modulate:a", 1.0, 0.6).set_delay(0.3)
 
-func _on_quit_pressed() -> void:
-	get_tree().quit()
+	if _buttons_box:
+		var btns := _buttons_box.get_children()
+		for i in btns.size():
+			if btns[i] is Button:
+				btns[i].modulate.a = 0.0
+				tween.tween_property(btns[i], "modulate:a", 1.0, 0.3).set_delay(0.5 + i * 0.12)
