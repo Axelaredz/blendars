@@ -70,7 +70,9 @@ func authenticate_async() -> bool:
 	# Attempt authentication with device ID
 	var auth_result = await client.authenticate_device_async(device_id, "", true)
 	if auth_result.is_err():
-		push_error("Authentication failed: " + str(auth_result.error()))
+		var err_msg := str(auth_result.error())
+		push_error("Authentication failed: " + err_msg)
+		connection_failed.emit(err_msg)
 		return false
 
 	# Store the session
@@ -108,7 +110,9 @@ func connect_socket_async() -> bool:
 	# Connect to the server using the current session
 	var connect_result = await socket.connect_async(session)
 	if connect_result.is_err():
-		push_error("Socket connection failed: " + str(connect_result.error()))
+		var err_msg := str(connect_result.error())
+		push_error("Socket connection failed: " + err_msg)
+		connection_failed.emit(err_msg)
 		return false
 
 	# Subscribe to socket signals
