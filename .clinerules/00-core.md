@@ -1,6 +1,7 @@
 # Core Context
 
 ## Структура правил
+```
 .clinerules/
   ├── 00-core.md      (базовые, CanvasLayer, virtual methods)
   ├── 01-gdscript.md  (синтаксис, API, ошибки)
@@ -8,6 +9,7 @@
   ├── 03-ui-core.md   (layout, input, focus, safe area)
   ├── 04-ui-theme.md  (стилизация, приоритеты, duplicate())
   └── 05-ui-perf.md   (производительность UI)
+```
 
 ## Stack
 Godot 4.6+ (GDScript only, no C#/Python). Учитывать нововведения: Jolt Physics (default 3D), IK-фреймворк (IKModifier3D etc.), SSR, delta PCK, Direct3D 12 (Windows default), AGX tone mapping, Tracy profiler.
