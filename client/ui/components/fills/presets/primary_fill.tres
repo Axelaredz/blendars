@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="FillStyle" load_steps=2 format=3 uid="uid://primary_fill_001"]
+
+[ext_resource type="Script" path="res://client/ui/components/fills/fill_style.gd" id="1_style"]
+
+[resource]
+script = ExtResource("1_style")
+idle_color = Color(0.741, 0.576, 0.976, 1)
+hover_color = Color(1, 0.475, 0.776, 1)
+pressed_color = Color(0.545, 0.98, 0.486, 1)
+disabled_color = Color(0.384, 0.447, 0.641, 1)
+border_width = 2
+idle_border_color = Color(0.741, 0.576, 0.976, 1)
+hover_border_color = Color(1, 0.475, 0.776, 1)
+pressed_border_color = Color(0.545, 0.98, 0.486, 1)
+disabled_border_color = Color(0.384, 0.447, 0.641, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_left = 8
+corner_radius_bottom_right = 8
+shadow_enabled = true
+shadow_color = Color(0, 0, 0, 0.3)
+shadow_size = 6
+shadow_offset = Vector2(2, 4)
+transition_duration = 0.2

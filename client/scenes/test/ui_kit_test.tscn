@@ -1,0 +1,353 @@
+[gd_scene format=3 uid="uid://baiekoax77ove"]
+
+[ext_resource type="Script" uid="uid://6rq80q2ixufu" path="res://client/scenes/test/ui_kit_test.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://mok55cqyma0q" path="res://client/ui/components/fills/fill.gd" id="2_fill"]
+[ext_resource type="Resource" path="res://client/ui/components/fills/presets/cyber_fill.tres" id="3_cyber"]
+[ext_resource type="Resource" path="res://client/ui/components/fills/presets/primary_fill.tres" id="4_primary"]
+[ext_resource type="Script" uid="uid://dv14mlk7qox4m" path="res://client/ui/components/buttons/cyber_button.gd" id="5_button"]
+[ext_resource type="Resource" path="res://client/ui/components/buttons/presets/primary_button.tres" id="6_primary_btn"]
+[ext_resource type="Resource" path="res://client/ui/components/buttons/presets/danger_button.tres" id="7_danger_btn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_background"]
+bg_color = Color(0.157, 0.165, 0.212, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="UIKitTest" type="Control" unique_id=599417976]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="PanelContainer" parent="." unique_id=24882798]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_background")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=470447692]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=59039173]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1309972732]
+layout_mode = 2
+text = "UI Kit Test - Fill Components"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=451787872]
+layout_mode = 2
+
+[node name="SectionLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1647341228]
+layout_mode = 2
+text = "Fill Component - Interactive (hover/press to see states)"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=982879035]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="FillDefault" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1987444754]
+custom_minimum_size = Vector2(180, 50)
+layout_mode = 2
+script = ExtResource("2_fill")
+style = ExtResource("3_cyber")
+interactive = true
+
+[node name="FillPrimary" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1989626308]
+custom_minimum_size = Vector2(180, 50)
+layout_mode = 2
+script = ExtResource("2_fill")
+style = ExtResource("4_primary")
+interactive = true
+
+[node name="SectionLabel2" type="Label" parent="MarginContainer/VBoxContainer" unique_id=154322253]
+layout_mode = 2
+text = "Fill Component - Different Corner Presets"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=890005473]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="FillAll" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1526002648]
+custom_minimum_size = Vector2(120, 50)
+layout_mode = 2
+script = ExtResource("2_fill")
+style = ExtResource("3_cyber")
+
+[node name="FillTop" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1268087142]
+custom_minimum_size = Vector2(120, 50)
+layout_mode = 2
+script = ExtResource("2_fill")
+style = ExtResource("3_cyber")
+corner_preset = "top"
+
+[node name="FillBottom" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=2053143091]
+custom_minimum_size = Vector2(120, 50)
+layout_mode = 2
+script = ExtResource("2_fill")
+style = ExtResource("3_cyber")
+corner_preset = "bottom"
+
+[node name="FillPill" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1757016555]
+custom_minimum_size = Vector2(120, 50)
+layout_mode = 2
+script = ExtResource("2_fill")
+style = ExtResource("4_primary")
+corner_preset = "pill"
+
+[node name="SectionLabel3" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1668459683]
+layout_mode = 2
+text = "State Controls"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=969926780]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="BtnIdle" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=2064906877]
+layout_mode = 2
+text = "Set Idle"
+
+[node name="BtnHover" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1357631221]
+layout_mode = 2
+text = "Set Hover"
+
+[node name="BtnPressed" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1556033096]
+layout_mode = 2
+text = "Set Pressed"
+
+[node name="BtnDisabled" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=794946591]
+layout_mode = 2
+text = "Set Disabled"
+
+[node name="SectionLabel4" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1951008469]
+layout_mode = 2
+text = "Fill with Custom Size"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=819564853]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="FillSmall" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=1450761795]
+custom_minimum_size = Vector2(80, 30)
+layout_mode = 2
+script = ExtResource("2_fill")
+style = ExtResource("3_cyber")
+fill_size = Vector2(80, 30)
+
+[node name="FillMedium" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=1205063929]
+custom_minimum_size = Vector2(160, 50)
+layout_mode = 2
+script = ExtResource("2_fill")
+style = ExtResource("4_primary")
+fill_size = Vector2(160, 50)
+
+[node name="FillLarge" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=1964989886]
+custom_minimum_size = Vector2(280, 70)
+layout_mode = 2
+script = ExtResource("2_fill")
+style = ExtResource("3_cyber")
+fill_size = Vector2(280, 70)
+
+[node name="FillXLarge" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=609257789]
+custom_minimum_size = Vector2(360, 90)
+layout_mode = 2
+script = ExtResource("2_fill")
+style = ExtResource("4_primary")
+fill_size = Vector2(360, 90)
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1996770420]
+layout_mode = 2
+
+[node name="ButtonSectionLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1249304354]
+layout_mode = 2
+text = "CyberButton Component - Click to test"
+
+[node name="ButtonHBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=848580742]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="BtnCyber" type="Control" parent="MarginContainer/VBoxContainer/ButtonHBox" unique_id=1695455448]
+custom_minimum_size = Vector2(180, 50)
+layout_mode = 2
+script = ExtResource("5_button")
+fill_style = ExtResource("3_cyber")
+text = "Cyber Button"
+
+[node name="BtnPrimary" type="Control" parent="MarginContainer/VBoxContainer/ButtonHBox" unique_id=1032932154]
+custom_minimum_size = Vector2(180, 50)
+layout_mode = 2
+script = ExtResource("5_button")
+fill_style = ExtResource("6_primary_btn")
+text = "Primary"
+
+[node name="BtnDanger" type="Control" parent="MarginContainer/VBoxContainer/ButtonHBox" unique_id=304644494]
+custom_minimum_size = Vector2(180, 50)
+layout_mode = 2
+script = ExtResource("5_button")
+fill_style = ExtResource("7_danger_btn")
+text = "Danger"
+
+[node name="ButtonSectionLabel2" type="Label" parent="MarginContainer/VBoxContainer" unique_id=758382386]
+layout_mode = 2
+text = "CyberButton - Different Corner Presets"
+
+[node name="ButtonHBox2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2067813822]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="BtnPill" type="Control" parent="MarginContainer/VBoxContainer/ButtonHBox2" unique_id=886297703]
+custom_minimum_size = Vector2(120, 50)
+layout_mode = 2
+script = ExtResource("5_button")
+fill_style = ExtResource("6_primary_btn")
+text = "Pill"
+font_size = 14
+corner_preset = "pill"
+button_size = Vector2(120, 50)
+
+[node name="BtnSharp" type="Control" parent="MarginContainer/VBoxContainer/ButtonHBox2" unique_id=149704606]
+custom_minimum_size = Vector2(120, 50)
+layout_mode = 2
+script = ExtResource("5_button")
+fill_style = ExtResource("3_cyber")
+text = "Sharp"
+font_size = 14
+corner_preset = "none"
+button_size = Vector2(120, 50)
+
+[node name="BtnTopCorners" type="Control" parent="MarginContainer/VBoxContainer/ButtonHBox2" unique_id=965055344]
+custom_minimum_size = Vector2(120, 50)
+layout_mode = 2
+script = ExtResource("5_button")
+fill_style = ExtResource("7_danger_btn")
+text = "Top Only"
+font_size = 14
+corner_preset = "top"
+button_size = Vector2(120, 50)
+
+[node name="ButtonSectionLabel3" type="Label" parent="MarginContainer/VBoxContainer" unique_id=574505326]
+layout_mode = 2
+text = "CyberButton - Sizes"
+
+[node name="ButtonHBox3" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1415136547]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="BtnSmall" type="Control" parent="MarginContainer/VBoxContainer/ButtonHBox3" unique_id=555775927]
+custom_minimum_size = Vector2(100, 36)
+layout_mode = 2
+script = ExtResource("5_button")
+fill_style = ExtResource("3_cyber")
+text = "Small"
+font_size = 12
+button_size = Vector2(100, 36)
+
+[node name="BtnMedium" type="Control" parent="MarginContainer/VBoxContainer/ButtonHBox3" unique_id=332105130]
+custom_minimum_size = Vector2(160, 50)
+layout_mode = 2
+script = ExtResource("5_button")
+fill_style = ExtResource("6_primary_btn")
+text = "Medium"
+button_size = Vector2(160, 50)
+
+[node name="BtnLarge" type="Control" parent="MarginContainer/VBoxContainer/ButtonHBox3" unique_id=382027782]
+custom_minimum_size = Vector2(220, 60)
+layout_mode = 2
+script = ExtResource("5_button")
+fill_style = ExtResource("7_danger_btn")
+text = "Large Button"
+font_size = 20
+button_size = Vector2(220, 60)
+
+[node name="ButtonSectionLabel4" type="Label" parent="MarginContainer/VBoxContainer" unique_id=588299249]
+layout_mode = 2
+text = "CyberButton - States"
+
+[node name="ButtonHBox4" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=885848840]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="BtnIdleState" type="Control" parent="MarginContainer/VBoxContainer/ButtonHBox4" unique_id=343072897]
+custom_minimum_size = Vector2(140, 50)
+layout_mode = 2
+script = ExtResource("5_button")
+fill_style = ExtResource("3_cyber")
+text = "Idle State"
+font_size = 14
+button_size = Vector2(140, 50)
+
+[node name="BtnDisabledState" type="Control" parent="MarginContainer/VBoxContainer/ButtonHBox4" unique_id=1800646993]
+custom_minimum_size = Vector2(140, 50)
+layout_mode = 2
+script = ExtResource("5_button")
+fill_style = ExtResource("6_primary_btn")
+text = "Disabled"
+font_size = 14
+button_size = Vector2(140, 50)
+disabled = true
+
+[node name="ClickCounterLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1449599249]
+layout_mode = 2
+text = "Click count: 0"
+horizontal_alignment = 1
+
+[node name="SectionLabel5" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1820652016]
+layout_mode = 2
+text = "Chamfer Buttons (skewed corners)"
+
+[node name="ChamferHBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=999999999]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="ChamferBR" type="Control" parent="MarginContainer/VBoxContainer/ChamferHBox" unique_id=888888881]
+custom_minimum_size = Vector2(140, 50)
+layout_mode = 2
+script = ExtResource("5_button")
+fill_style = ExtResource("3_cyber")
+text = "Chamfer BR"
+font_size = 14
+button_size = Vector2(140, 50)
+chamfer_enabled = true
+chamfer_bottom_right = true
+
+[node name="ChamferTL" type="Control" parent="MarginContainer/VBoxContainer/ChamferHBox" unique_id=888888882]
+custom_minimum_size = Vector2(140, 50)
+layout_mode = 2
+script = ExtResource("5_button")
+fill_style = ExtResource("6_primary_btn")
+text = "Chamfer TL"
+font_size = 14
+button_size = Vector2(140, 50)
+chamfer_enabled = true
+chamfer_top_left = true
+
+[node name="ChamferBoth" type="Control" parent="MarginContainer/VBoxContainer/ChamferHBox" unique_id=888888883]
+custom_minimum_size = Vector2(140, 50)
+layout_mode = 2
+script = ExtResource("5_button")
+fill_style = ExtResource("7_danger_btn")
+text = "Chamfer Both"
+font_size = 14
+button_size = Vector2(140, 50)
+chamfer_enabled = true
+chamfer_bottom_right = true
+chamfer_top_left = true

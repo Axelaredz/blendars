@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://cyber_btn_001"]
+
+[ext_resource type="Script" path="res://client/ui/components/buttons/cyber_button.gd" id="1_script"]
+[ext_resource type="Resource" path="res://client/ui/components/fills/presets/cyber_fill.tres" id="2_style"]
+
+[node name="CyberButton" type="Control"]
+custom_minimum_size = Vector2(180, 50)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 180.0
+offset_bottom = 50.0
+script = ExtResource("1_script")
+fill_style = ExtResource("2_style")
+text = "Button"
+font_size = 16
+corner_preset = "all"
+button_size = Vector2(180, 50)

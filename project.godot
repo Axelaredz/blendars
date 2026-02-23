@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-run/main_scene="uid://cyqy6dvynho67"
+run/main_scene="uid://baiekoax77ove"
 config/features=PackedStringArray("4.6")
 
 [audio]
@@ -26,6 +26,7 @@ ProjectMusicController="*uid://r5t485lr3p7t"
 ProjectUISoundController="*uid://cc37235kj4384"
 AppConfig="*res://client/app_config.tscn"
 Nakama="*uid://bkgt8drgka7yy"
+DebugMenu="*uid://cggqb75a8w8r"
 
 [dotnet]
 
@@ -33,7 +34,7 @@ project/assembly_name="Blendars"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/com.heroiclabs.nakama/plugin.cfg", "res://addons/gdai-mcp-plugin-godot/plugin.cfg", "res://addons/maaacks_game_template/plugin.cfg")
+enabled=PackedStringArray("res://addons/com.heroiclabs.nakama/plugin.cfg", "res://addons/debug_menu/plugin.cfg", "res://addons/gdai-mcp-plugin-godot/plugin.cfg", "res://addons/maaacks_game_template/plugin.cfg")
 
 [gui]
 

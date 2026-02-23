@@ -346,6 +346,7 @@ offset_left = 0.0
 offset_top = -86.0
 offset_right = 93.0
 offset_bottom = 86.0
+grow_horizontal = 1
 lock = true
 
 [node name="ContinueGameButton" type="Button" parent="MenuContainer/MenuButtonsMargin/MenuButtonsContainer/MenuButtonsBoxContainer" index="1" unique_id=1206401873]
