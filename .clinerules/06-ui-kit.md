@@ -1,302 +1,538 @@
 # Модульный UI Kit — BLEND ARS | Godot 4.6
-## Единственный источник правды для ИИ-агента
+
+Единственный источник правил для ИИ-агента.
 
 ---
 
-## 🎯 КОНТРАКТ
+## 1. КОНТРАКТ
 
 ```
-РОЛЬ:      AI-агент, строящий модульный UI Kit
-СТИЛЬ:     Киберпанк / sci-fi
-ПРОЕКТ:    BLEND ARS
-ДВИЖОК:    Godot 4.6 stable, GDScript only
-ПРИОРИТЕТ: Модульность > Красота, Простота > Сложность
-```
-
----
-
-## 🏗️ ФАЙЛОВАЯ СТРУКТУРА
-
-```
-res://client/ui/ui_kit/
-├── tokens/          ← Autoload + ресурсы стилей
-│   ├── ui_tokens.gd          (Autoload-синглтон)
-│   ├── ui_colors.tres
-│   └── ui_theme.tres
-│
-├── atoms/           ← Неделимые визуальные элементы
-│   ├── text_body.tscn/.gd
-│   ├── text_label.tscn/.gd
-│   ├── text_display.tscn/.gd
-│   ├── text_hud.tscn/.gd
-│   ├── icon_element.tscn/.gd
-│   ├── divider.tscn/.gd
-│   ├── divider_glow.tscn/.gd
-│   ├── accent_bar.tscn/.gd
-│   ├── dot_indicator.tscn/.gd
-│   └── scanline_overlay.tscn/.gd
-│
-├── molecules/       ← 2–5 атомов, одна функция
-│   ├── menu_item.tscn/.gd
-│   ├── hotkey_hint.tscn/.gd
-│   ├── stat_line.tscn/.gd
-│   ├── icon_button.tscn/.gd
-│   ├── tab_item.tscn/.gd
-│   ├── toggle_switch.tscn/.gd
-│   ├── cyber_slider.tscn/.gd
-│   └── cyber_dropdown.tscn/.gd
-│
-├── organisms/       ← Самодостаточные блоки из молекул
-│   ├── main_nav.tscn/.gd
-│   ├── title_bar.tscn/.gd
-│   ├── hotkey_bar.tscn/.gd
-│   ├── unit_card.tscn/.gd
-│   ├── settings_group.tscn/.gd
-│   ├── modal_dialog.tscn/.gd
-│   └── notification_toast.tscn/.gd
-│
-├── templates/       ← Разметка экрана БЕЗ контента
-│   ├── layout_main_menu.tscn/.gd
-│   ├── layout_arsenal.tscn/.gd
-│   ├── layout_settings.tscn/.gd
-│   └── layout_loading.tscn/.gd
-│
-├── fx/              ← Шейдеры и пост-эффекты
-│   ├── crt_scanlines.gdshader
-│   ├── noise_grain.gdshader
-│   ├── vignette.gdshader
-│   ├── chromatic_aberration.gdshader
-│   ├── glow_text.gdshader
-│   ├── glitch.gdshader
-│   └── post_fx_layer.tscn/.gd
-│
-└── assets/
-    ├── fonts/       ← .ttf + .tres (FontFile ресурсы)
-    ├── icons/       ← .svg
-    └── textures/    ← noise_512.png и т.д.
-
-res://client/ui/screens/       ← Готовые экраны с логикой
-├── main_menu.tscn/.gd
-├── arsenal_screen.tscn/.gd
-└── settings_screen.tscn/.gd
+Роль:      AI-агент, строящий модульный UI Kit
+Стиль:     Киберпанк / sci-fi
+Проект:    BLEND ARS
+Движок:    Godot 4.6 stable, GDScript only
+Приоритет: Модульность > Красота, Простота > Сложность
 ```
 
 ---
 
-## 📐 УРОВНИ КОМПОНЕНТОВ
-
-### Классификатор (используй сверху вниз)
+## 2. ФАЙЛОВАЯ СТРУКТУРА
 
 ```
-Неделимый визуал?                     → ATOM
-Комбинация 2–5 атомов, одна функция?  → MOLECULE
-Блок из молекул, самодостаточный?     → ORGANISM
-Разметка зон без контента?            → TEMPLATE
-Экран с данными и логикой?            → SCREEN
+res://client/ui/
+├── ui_kit/
+│   ├── tokens/
+│   │   ├── ui_tokens.gd            Autoload — константы (цвета, размеры, шрифты)
+│   │   ├── ui_theme_builder.gd     class_name — фабрика Theme + variations
+│   │   ├── ui_state.gd             Autoload — глобальное состояние UI
+│   │   ├── ui_navigation.gd        Autoload — зоны навигации и фокуса
+│   │   ├── ui_anim.gd              Autoload — анимационные пресеты
+│   │   ├── ui_colors.tres
+│   │   └── ui_theme.tres
+│   │
+│   ├── atoms/
+│   │   ├── text_body.tscn/.gd
+│   │   ├── text_label.tscn/.gd
+│   │   ├── text_display.tscn/.gd
+│   │   ├── text_hud.tscn/.gd
+│   │   ├── icon_element.tscn/.gd
+│   │   ├── divider.tscn/.gd
+│   │   ├── divider_glow.tscn/.gd
+│   │   ├── accent_bar.tscn/.gd
+│   │   ├── dot_indicator.tscn/.gd
+│   │   └── scanline_overlay.tscn/.gd
+│   │
+│   ├── molecules/
+│   │   ├── menu_item.tscn/.gd
+│   │   ├── hotkey_hint.tscn/.gd
+│   │   ├── stat_line.tscn/.gd
+│   │   ├── icon_button.tscn/.gd
+│   │   ├── tab_item.tscn/.gd
+│   │   ├── toggle_switch.tscn/.gd
+│   │   ├── cyber_slider.tscn/.gd
+│   │   └── cyber_dropdown.tscn/.gd
+│   │
+│   ├── organisms/
+│   │   ├── main_nav.tscn/.gd
+│   │   ├── title_bar.tscn/.gd
+│   │   ├── hotkey_bar.tscn/.gd
+│   │   ├── unit_card.tscn/.gd
+│   │   ├── settings_group.tscn/.gd
+│   │   ├── modal_dialog.tscn/.gd
+│   │   └── notification_toast.tscn/.gd
+│   │
+│   ├── templates/
+│   │   ├── layout_main_menu.tscn/.gd
+│   │   ├── layout_arsenal.tscn/.gd
+│   │   ├── layout_settings.tscn/.gd
+│   │   └── layout_loading.tscn/.gd
+│   │
+│   ├── fx/
+│   │   ├── crt_scanlines.gdshader
+│   │   ├── noise_grain.gdshader
+│   │   ├── vignette.gdshader
+│   │   ├── chromatic_aberration.gdshader
+│   │   ├── glow_text.gdshader
+│   │   ├── glitch.gdshader
+│   │   └── post_fx_layer.tscn/.gd
+│   │
+│   └── assets/
+│       ├── fonts/          .ttf + .tres
+│       ├── icons/          .svg
+│       └── textures/       noise_512.png и т.д.
+│
+└── screens/
+    ├── main_menu.tscn/.gd
+    ├── arsenal_screen.tscn/.gd
+    └── settings_screen.tscn/.gd
 ```
 
-### Сводная таблица правил по уровням
+project.godot — Autoload:
 
-| Свойство              | Atom     | Molecule  | Organism   | Template | Screen   |
-|-----------------------|----------|-----------|------------|----------|----------|
-| Содержит бизнес-логику| ✗        | ✗         | Свою       | ✗        | ✓        |
-| Знает контекст        | ✗        | ✗         | ✗          | ✗        | ✓        |
-| Скрипт                | Стиль    | Состояния | Управление | Слоты    | Логика   |
-| Сигналы наверх        | —        | ✓         | ✓ (агрегир)| —        | Конечные |
-| get_parent()          | ✗        | ✗         | ✗          | ✗        | Допустимо|
-| Динамические дети     | ✗        | ✗         | ✓          | ✗        | ✓        |
-| @export кастомизация  | ✓        | ✓         | ✓          | ✓        | —        |
-| Корневой узел         | Control+ | Control+  | Control+   | Control  | Control  |
-| class_name префикс    | Atom*    | Molecule* | Organism*  | Template*| Screen*  |
-
-**Интерактивные молекулы** обязаны реализовать ВСЕ 5 состояний:
-`default` → `hover` → `pressed` → `focused` → `disabled`
+```ini
+[autoload]
+UiTokens="*res://client/ui/ui_kit/tokens/ui_tokens.gd"
+UiState="*res://client/ui/ui_kit/tokens/ui_state.gd"
+UiNav="*res://client/ui/ui_kit/tokens/ui_navigation.gd"
+UiAnim="*res://client/ui/ui_kit/tokens/ui_anim.gd"
+```
 
 ---
 
-## 🧬 ЭТАЛОННЫЕ ДЕРЕВЬЯ УЗЛОВ
+## 3. СИНГЛТОНЫ
 
-### Atoms
+Обзор:
+
+| Синглтон           | Тип        | Отвечает за                          | Кто использует                           |
+|--------------------|------------|--------------------------------------|------------------------------------------|
+| UiTokens           | Autoload   | Константы: цвета, размеры, шрифты    | Все уровни                               |
+| UiThemeBuilder     | class_name | Фабрика Theme, регистрация variations | Screen вызывает get_theme() в _ready()   |
+| UiState            | Autoload   | Состояние UI: экран, модалка, флаги  | Screen пишет, Organism/Molecule читает   |
+| UiNav              | Autoload   | Зоны навигации, фокус, клавиатура    | Organism регистрирует, Screen переключает |
+| UiAnim             | Autoload   | Анимационные пресеты                 | Organism/Screen вызывает                 |
+
+
+### 3.1 UiThemeBuilder — каскадные стили
+
+Подключение — одна строка в корне экрана:
 
 ```gdscript
-# TextBody — Label
-# AccentBar — ColorRect
-# Divider — ColorRect
-# DotIndicator — TextureRect | ColorRect
-# IconElement — TextureRect
+func _ready() -> void:
+    theme = UiThemeBuilder.get_theme()
 ```
 
-### Molecules
+Все дочерние узлы наследуют стили каскадно. Компоненты стилизуются только через variations:
+
+```gdscript
+# Запрещено:
+_label.add_theme_font_override("font", load(...))
+_label.add_theme_color_override("font_color", Color(...))
+
+# Правильно:
+_label.theme_type_variation = "LabelSecondary"
+```
+
+Реестр variations:
+
+```
+Label:
+  "Label"            — default body
+  "LabelSecondary"   — приглушённый
+  "LabelAccent"      — неоновый акцент
+  "LabelDisplay"     — крупный заголовок
+  "LabelHUD"         — моноширинный
+  "LabelMicro"       — мелкий вспомогательный
+
+PanelContainer:
+  "PanelContainer"   — default
+  "PanelNav"         — навигационная панель
+  "PanelCard"        — карточка
+  "PanelModal"       — модальное окно
+
+Новые variations — только в UiThemeBuilder.
+```
+
+
+### 3.2 UiState — глобальное состояние UI
+
+Хранит только состояние. Не логику, не анимации, не ввод.
+
+```
+Хранит:                             Не хранит:
+  current_screen: StringName          Позиции / размеры узлов
+  previous_screen: StringName         Анимации
+  active_menu_item: StringName        Данные 3D-сцены
+  is_modal_open: bool                 Обработку ввода
+  global_flags (loading, error)       Бизнес-логику игры
+```
+
+Поток данных — однонаправленный:
+
+```
+User click
+  -> MenuItem.signal
+    -> Screen._on_nav_selected()
+      -> UiState.navigate_to("arsenal")
+        -> signal screen_changed
+          -> MainNav обновляет визуал
+          -> HotkeyBar обновляет хинты
+          -> SceneManager загружает экран
+
+Action -> State -> View
+Компоненты не знают друг о друге.
+```
+
+Подписка (Organism читает):
+
+```gdscript
+func _ready() -> void:
+    UiState.active_nav_changed.connect(_on_active_changed)
+    UiState.screen_changed.connect(_on_screen_changed)
+
+func _on_active_changed(item_id: StringName) -> void:
+    for item in _item_nodes:
+        item.is_active = (item.item_id == item_id)
+```
+
+Установка (Screen пишет):
+
+```gdscript
+func _on_nav_selected(item_id: String) -> void:
+    UiState.active_nav_item = StringName(item_id)
+    UiState.navigate_to(StringName(item_id))
+```
+
+
+### 3.3 UiNav — централизованная навигация
+
+Единая точка обработки клавиатурного ввода. Организмы регистрируют свои элементы, а не ловят ввод сами.
+
+```
+Делает:                              Не делает:
+  Хранит зоны навигации                Визуальные эффекты фокуса
+  Переключает активную зону             Анимации
+  Обрабатывает стрелки / Tab / Esc     Бизнес-логику
+  wrapi() для зацикливания             Загрузку экранов
+  Блокирует зоны под модалкой          Хранение данных
+```
+
+Регистрация (Organism при _ready):
+
+```gdscript
+func _ready() -> void:
+    UiNav.register_zone(
+        &"main_nav",
+        _item_nodes as Array[Control],
+        true  # сделать активной
+    )
+
+func _exit_tree() -> void:
+    UiNav.unregister_zone(&"main_nav")
+```
+
+Из организма удаляется: `_unhandled_key_input()`, `_move_focus()`, `_focused_index` — всё теперь в UiNav.
+
+Переключение (Screen):
+
+```gdscript
+UiNav.set_active_zone(&"arsenal_grid")
+UiNav.push_modal_zone(&"dialog")   # блокирует остальные
+```
+
+
+### 3.4 UiAnim — анимационные пресеты
+
+Централизованные анимации вместо копипасты Tween-логики в каждом компоненте.
+
+```gdscript
+# Запрещено (в каждом компоненте):
+var tw := create_tween()
+tw.set_ease(Tween.EASE_OUT)
+tw.set_trans(Tween.TRANS_CUBIC)
+tw.tween_property(self, "modulate:a", 1.0, 0.8)
+
+# Правильно:
+UiAnim.screen_enter(self)
+UiAnim.stagger_slide_in(_item_nodes as Array[Control], UiAnim.SlideDirection.LEFT)
+UiAnim.glitch(error_panel, 8.0, 0.4)
+```
+
+Длительности и easing хранятся в UiTokens.ANIM_*. UiAnim использует их внутри.
+
+
+### 3.5 UiTokens — breakpoints (минимальная responsive-логика)
+
+Полная responsive-система не нужна: Godot stretch mode решает 80% задач. Добавляется только трёхуровневая система:
+
+```gdscript
+enum ScreenTier { COMPACT, STANDARD, EXPANDED }
+# COMPACT:  <= 1280px (720p, Steam Deck), ui_scale = 0.85
+# STANDARD: 1281-1920px (1080p),          ui_scale = 1.0
+# EXPANDED: > 1920px (1440p, 4K),         ui_scale = 1.15
+
+func space(base: int) -> int:
+    return roundi(base * ui_scale)
+
+func font_size(base: int) -> int:
+    return roundi(base * ui_scale)
+
+func get_nav_width() -> int:
+    match current_tier:
+        ScreenTier.COMPACT:  return 220
+        ScreenTier.STANDARD: return 280
+        ScreenTier.EXPANDED: return 320
+    return 280
+```
+
+Breakpoints используются только в templates и organisms. В атомах и молекулах — фиксированные константы, масштабируются stretch mode.
+
+---
+
+## 4. УРОВНИ КОМПОНЕНТОВ
+
+Классификатор (сверху вниз):
+
+```
+Неделимый визуал?                      -> ATOM
+Комбинация 2-5 атомов, одна функция?   -> MOLECULE
+Блок из молекул, самодостаточный?      -> ORGANISM
+Разметка зон без контента?             -> TEMPLATE
+Экран с данными и логикой?             -> SCREEN
+```
+
+Сводная таблица:
+
+| Свойство                | Atom   | Molecule | Organism       | Template | Screen        |
+|-------------------------|--------|----------|----------------|----------|---------------|
+| Бизнес-логика приложения| нет    | нет      | нет            | нет      | да            |
+| Логика своего блока     | нет    | нет      | да             | нет      | да            |
+| Знает контекст          | нет    | нет      | нет            | нет      | да            |
+| Скрипт содержит         | стиль  | состояния| управление     | слоты    | логику        |
+| Сигналы наверх          | нет    | да       | да (агрегир.)  | нет      | конечные      |
+| get_parent()            | нет    | нет      | нет            | нет      | допустимо     |
+| Динамические дети       | нет    | нет      | да             | нет      | да            |
+| @export                 | да     | да       | да             | да       | нет           |
+| Корневой узел           | Control| Control  | Control        | Control  | Control       |
+| class_name              | Atom*  | Molecule*| Organism*      | Template*| Screen*       |
+| UiState                 | нет    | читает   | читает         | нет      | пишет         |
+| UiNav                   | нет    | нет      | регистрирует   | нет      | переключает   |
+| UiAnim                  | нет    | нет      | вызывает       | нет      | вызывает      |
+
+Интерактивные молекулы обязаны реализовать все 5 состояний:
+default, hover, pressed, focused, disabled.
+
+---
+
+## 5. ЭТАЛОННЫЕ ДЕРЕВЬЯ УЗЛОВ
+
+Atoms:
+
+```
+TextBody     — Label
+AccentBar    — ColorRect
+Divider      — ColorRect
+DotIndicator — ColorRect
+IconElement  — TextureRect
+```
+
+Molecules:
 
 ```
 MenuItem (PanelContainer)
-├── HBox (HBoxContainer)
-│   ├── AccentBar ← atom instance
-│   ├── Icon (TextureRect) — optional
-│   └── Label ← atom TextBody instance
+  HBox (HBoxContainer)
+    AccentBar       <- atom
+    Icon            <- TextureRect, optional
+    Label           <- atom TextBody
 
 HotkeyHint (HBoxContainer)
-├── KeyBadge (PanelContainer)
-│   └── KeyLabel (Label)
-└── ActionLabel (Label)
+  KeyBadge (PanelContainer)
+    KeyLabel (Label)
+  ActionLabel (Label)
 
 StatLine (HBoxContainer)
-├── StatLabel (Label)
-├── ProgressBar
-└── StatValue (Label)
+  StatLabel (Label)
+  ProgressBar
+  StatValue (Label)
 ```
 
-### Organisms
+Organisms:
 
 ```
 MainNav (PanelContainer)
-└── VBox (VBoxContainer)
-    ├── SectionLabel ← atom TextLabel
-    ├── ItemsContainer (VBoxContainer)
-    │   └── MenuItem × N ← molecule instances
-    ├── Divider ← atom
-    └── ExitItem ← molecule MenuItem (variant=danger)
+  VBox (VBoxContainer)
+    SectionLabel    <- atom TextLabel
+    ItemsContainer (VBoxContainer)
+      MenuItem x N  <- molecule
+    Divider         <- atom
+    ExitItem        <- molecule MenuItem (variant=danger)
 ```
 
-### Templates
+Templates:
 
 ```
 LayoutMainMenu (Control) — full_rect
-├── Background (ColorRect)
-├── GridContainer
-│   ├── TitleSlot (MarginContainer)     — top, 100%W
-│   ├── NavSlot (MarginContainer)       — left, 280px
-│   ├── ViewportSlot (MarginContainer)  — center, flex
-│   └── BottomSlot (MarginContainer)    — bottom, 100%W
-└── PostFXLayer ← instance
+  Background (ColorRect)
+  GridContainer
+    TitleSlot (MarginContainer)      — top, 100%W
+    NavSlot (MarginContainer)        — left, 280px
+    ViewportSlot (MarginContainer)   — center, flex
+    BottomSlot (MarginContainer)     — bottom, 100%W
+  PostFXLayer <- instance
 ```
 
-### PostFXLayer
+PostFXLayer:
 
 ```
 PostFXLayer (CanvasLayer) — layer=100
-├── ScanlineRect (ColorRect)   ← crt_scanlines.gdshader
-├── NoiseRect (ColorRect)      ← noise_grain.gdshader
-├── VignetteRect (ColorRect)   ← vignette.gdshader
-└── AberrationRect (ColorRect) ← chromatic_aberration.gdshader
+  ScanlineRect (ColorRect)    <- crt_scanlines.gdshader
+  NoiseRect (ColorRect)       <- noise_grain.gdshader
+  VignetteRect (ColorRect)    <- vignette.gdshader
+  AberrationRect (ColorRect)  <- chromatic_aberration.gdshader
 ```
 
 ---
 
-## 🔒 НЕЙМИНГ — Без исключений
+## 6. НЕЙМИНГ
 
-| Сущность          | Формат            | Пример                           |
-|-------------------|-------------------|----------------------------------|
-| Файлы             | `snake_case`      | `menu_item.gd`, `menu_item.tscn` |
-| class_name        | `PrefixPascal`    | `AtomTextBody`, `MoleculeMenuItem`|
-| Переменные        | `snake_case`      | `is_active`                      |
-| Константы         | `UPPER_SNAKE`     | `COLOR_ACCENT_PRIMARY`           |
-| Сигналы           | `snake_case`      | `item_pressed`                   |
-| Приватные         | `_prefix`         | `_is_hovered`, `_apply_style()`  |
-| @onready          | `_prefix`         | `@onready var _label`            |
-| @export           | **без** prefix    | `@export var label_text`         |
-| Узлы в .tscn      | `PascalCase`      | `TitleLabel`, `AccentBar`        |
-| Unique names      | `%PascalCase`     | `%TitleLabel`                    |
-
----
-
-## 🚫 ЗАПРЕТЫ (таблица быстрой проверки)
-
-| ✗ Запрещено                            | ✓ Правильно                               |
-|----------------------------------------|--------------------------------------------|
-| `Color("#00F0FF")` в компонентах       | `UiTokens.COLOR_ACCENT_PRIMARY`            |
-| `padding = 16`                         | `UiTokens.SPACE_LG`                        |
-| `get_parent()` в atom/molecule         | Сигналы наверх                             |
-| God-объект                             | Разбить по уровням                         |
-| Дублирование стилей                    | `UiTokens.make_stylebox_*()`               |
-| Анимация без токена длительности       | `UiTokens.ANIM_DURATION_*`                 |
-| Post-fx внутри компонента              | Только через `PostFXLayer`                 |
-| Логика в organism/ниже                 | Логика только в `Screen`                   |
-| Magic numbers                          | Именованная константа в `UiTokens`         |
-| Opacity scanlines > 0.12              | Правило 10% для эффектов                   |
-| Opacity noise > 0.07                  | ↑                                          |
-| Opacity vignette > 0.6               | ↑                                          |
+| Сущность     | Формат          | Пример                            |
+|--------------|-----------------|-----------------------------------|
+| Файлы        | snake_case      | menu_item.gd, menu_item.tscn      |
+| class_name   | PrefixPascal    | AtomTextBody, MoleculeMenuItem     |
+| Переменные   | snake_case      | is_active                          |
+| Константы    | UPPER_SNAKE     | COLOR_ACCENT_PRIMARY               |
+| Сигналы      | snake_case      | item_pressed                       |
+| Приватные    | _prefix         | _is_hovered, _apply_style()        |
+| @onready     | _prefix         | @onready var _label                |
+| @export      | без prefix      | @export var label_text             |
+| Узлы в .tscn | PascalCase      | TitleLabel, AccentBar              |
+| Unique names | %PascalCase     | %TitleLabel                        |
 
 ---
 
-## ⚖️ ПРАВИЛО 70 / 20 / 10
+## 7. ЗАПРЕТЫ
 
-Применяется к **трём осям** одновременно:
+| Запрещено                                  | Правильно                                             |
+|--------------------------------------------|-------------------------------------------------------|
+| Color("#00F0FF") в компонентах             | UiTokens.COLOR_ACCENT_PRIMARY                         |
+| padding = 16                               | UiTokens.SPACE_LG                                     |
+| Magic numbers                              | Именованная константа в UiTokens                      |
+| get_parent() в atom/molecule               | Сигналы наверх                                        |
+| add_theme_*_override() в компонентах       | theme_type_variation = "..."                           |
+| Хардкод Tween-анимаций в компоненте        | UiAnim.preset()                                        |
+| Анимация без токена длительности           | UiTokens.ANIM_DURATION_*                               |
+| Дублирование стилей между компонентами     | UiTokens.make_stylebox_*() или Theme variation         |
+| God-объект                                 | Разбить по уровням                                     |
+| Логика приложения в organism и ниже        | Логика приложения только в Screen                      |
+| Post-fx внутри компонента                  | Только через PostFXLayer                               |
+| Логика переходов внутри компонентов        | UiState.navigate_to() + подписка на сигнал             |
+| Organism/Atom пишет в UiState              | Пишет только Screen; остальные только читают           |
+| _unhandled_key_input() в организмах        | UiNav.register_zone() + централизованный ввод          |
+| Своя focus-логика / wrapi() в компоненте   | Только через UiNav                                     |
+| Opacity scanlines > 0.12                   | Правило 10% для эффектов                               |
+| Opacity noise > 0.07                       | (см. выше)                                              |
+| Opacity vignette > 0.6                     | (см. выше)                                              |
+| Component Factory / UiFactory.create()     | preload().instantiate() с типизацией (см. раздел 10)   |
+
+---
+
+## 8. ПРАВИЛО 70 / 20 / 10
+
+Применяется к трём осям одновременно:
 
 ```
-         70% база           20% структура      10% акцент
-ЦВЕТ     Тёмное пространство  Средние тона       Неон
-ШРИФТ    Body (основной)      Label (uppercase)  Display (glow)
-ЭФФЕКТЫ  Статичные элементы   Мягкие реакции     Яркие эффекты
-FX       Без шейдера          Субтильный          Glow/glitch
+         70% база              20% структура       10% акцент
+Цвет     Тёмное пространство   Средние тона        Неон
+Шрифт    Body (основной)       Label (uppercase)   Display (glow)
+Анимация Статичные элементы    Мягкие реакции      Яркие эффекты
+FX       Без шейдера           Субтильный          Glow / glitch
+```
+
+Пропорции экрана (1920x1080):
+
+```
+Title zone:     ~8%H    = 86px
+Content zone:   ~86%H   = 929px
+Bottom zone:    ~6%H    = 65px
+Nav width:      280px   (14.6%W)
+Viewport:       flex    (85.4%W)
+Негативное пространство: >= 70% площади
+Активные элементы:       <= 30% площади
 ```
 
 ---
 
-## 📐 ПРОПОРЦИИ ЭКРАНА (1920×1080)
+## 9. АЛГОРИТМ СОЗДАНИЯ ЭКРАНА
 
 ```
-Title zone:     ~8%H   ≈ 86px
-Content zone:   ~86%H  ≈ 929px
-Bottom zone:    ~6%H   ≈ 65px
-Nav width:      280px  (14.6%W)
-Viewport:       flex   (85.4%W)
-Негативное пространство: ≥ 70% площади
-Активные элементы:       ≤ 30% площади
-```
-
----
-
-## 🔄 АЛГОРИТМ СОЗДАНИЯ ЭКРАНА
-
-```
-1. АУДИТ ЗОНЫ
-   Какие зоны? (top/left/center/bottom)
+1. Аудит зон
+   Какие зоны на экране? (top / left / center / bottom)
    Какие организмы нужны?
 
-2. ИНВЕНТАРИЗАЦИЯ
-   ✓ organisms/ — что переиспользовать?
-   ✓ molecules/ — что переиспользовать?
-   ✓ atoms/     — что переиспользовать?
+2. Инвентаризация
+   organisms/ — что переиспользовать?
+   molecules/ — что переиспользовать?
+   atoms/     — что переиспользовать?
 
-3. ДОСТРОЙКА (снизу вверх)
-   Недостающие atoms → molecules → organisms
+3. Достройка (снизу вверх)
+   Недостающие atoms -> molecules -> organisms
 
-4. ШАБЛОН
-   Есть подходящий template? Используй.
-   Нет? Создай. Template = ТОЛЬКО разметка слотов.
+4. Шаблон
+   Есть подходящий template — используй.
+   Нет — создай. Template = только разметка слотов.
 
-5. ЭКРАН
+5. Экран
    Screen инстанцирует template
-   → вставляет organisms в слоты
-   → подключает сигналы
-   → содержит бизнес-логику
-   → добавляет PostFXLayer
+   -> вставляет organisms в слоты
+   -> подключает сигналы
+   -> содержит бизнес-логику
+   -> добавляет PostFXLayer
 
-6. ВЕРИФИКАЦИЯ 70/20/10
-   ☐ 70% — тёмное пространство
-   ☐ 70% — основной шрифт
-   ☐ 70% — статичные элементы
-   ☐ ≤10% — неоновые акценты
-   ☐ ≤10% — яркие эффекты
-   ☐ Post-FX незаметны при беглом взгляде
+6. Верификация
+   [ ] 70% — тёмное пространство
+   [ ] 70% — основной шрифт
+   [ ] 70% — статичные элементы
+   [ ] <= 10% — неоновые акценты
+   [ ] <= 10% — яркие эффекты
+   [ ] Post-FX незаметны при беглом взгляде
 ```
 
 ---
 
-## ✅ ЧЕК-ЛИСТ ПЕРЕД КОММИТОМ КОМПОНЕНТА
+## 10. АНТИПАТТЕРН: COMPONENT FACTORY
+
+Фабрика компонентов (UiFactory.create("MenuItem", {})) запрещена.
+
+Причины:
 
 ```
-☐ Уровень определён (atom/molecule/organism/template/screen)
-☐ Нет дубликата в существующем kit
-☐ Цвета     → UiTokens.COLOR_*
-☐ Размеры   → UiTokens.SPACE_*
-☐ Шрифты    → UiTokens.FONT_PATH_*
-☐ Анимации  → UiTokens.ANIM_*
-☐ @tool если нужен превью
-☐ @export для настроек инспектора
-☐ Все состояния (hover/active/disabled/focused)
-☐ Сигналы вверх, нет get_parent()
-☐ class_name с правильным префиксом уровня
-☐ ## doc-комментарии для класса и @export
+1. preload() проверяется при компиляции, load() — нет.
+2. Factory возвращает Node — теряется типизация и autocomplete.
+3. В .tscn видно инстанс; за вызовом create() — ничего не видно.
+4. В Godot instantiate() уже является фабрикой.
+```
+
+Правильно:
+
+```gdscript
+const MENU_ITEM := preload("res://client/ui/ui_kit/molecules/menu_item.tscn")
+var item := MENU_ITEM.instantiate() as MoleculeMenuItem
+```
+
+---
+
+## 11. ЧЕК-ЛИСТ КОМПОНЕНТА
+
+```
+[ ] Уровень определён (atom / molecule / organism / template / screen)
+[ ] Нет дубликата в существующем kit
+[ ] Цвета         -> UiTokens.COLOR_*
+[ ] Размеры       -> UiTokens.SPACE_*
+[ ] Стили         -> theme_type_variation (не override)
+[ ] Анимации      -> UiAnim.preset() или UiTokens.ANIM_*
+[ ] @tool если нужен превью в редакторе
+[ ] @export для настроек инспектора
+[ ] Все состояния реализованы (hover / active / disabled / focused)
+[ ] Сигналы вверх, нет get_parent()
+[ ] class_name с префиксом уровня
+[ ] doc-комментарии для класса и @export
 ```

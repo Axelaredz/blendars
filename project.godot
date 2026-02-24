@@ -27,6 +27,9 @@ ProjectUISoundController="*uid://cc37235kj4384"
 AppConfig="*res://client/app_config.tscn"
 Nakama="*uid://bkgt8drgka7yy"
 DebugMenu="*uid://cggqb75a8w8r"
+UiTokens="*res://client/ui/ui_kit/tokens/ui_tokens.gd"
+UiState="*res://client/ui/ui_kit/tokens/ui_state.gd"
+UiNav="*res://client/ui/ui_kit/tokens/ui_navigation.gd"
 
 [dotnet]
 
