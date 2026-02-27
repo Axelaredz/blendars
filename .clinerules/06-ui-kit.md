@@ -1,3 +1,4 @@
+06-ui-kit.md
 # Модульный UI Kit — BLEND ARS | Godot 4.6
 
 Единственный источник правил для ИИ-агента.
@@ -13,6 +14,155 @@
 Движок:    Godot 4.6 stable, GDScript only
 Приоритет: Модульность > Красота, Простота > Сложность
 ```
+
+---
+
+## 2. ЗАВИСИМОСТИ
+
+### Аддоны в проекте
+
+| Аддон   | Путь                    | Что даёт проекту                                  |
+|---------|-------------------------|----------------------------------------------------|
+| netfox  | res://addons/netfox/    | NetworkTime, NetworkRollback, TickInterpolation    |
+| nakama  | res://addons/com.heroiclabs.nakama/ | Auth, matchmaking, leaderboards, storage, realtime |
+| phantom_camera  | res://addons/phantom_camera/      | Камера: follow, зоны, переходы, тряска               |
+| limbo_ai        | res://addons/limboai/             | Behavior Trees (BTPlayer), State Machines (LimboHSM) |
+
+### Файловая структура сетевого слоя
+```
+res://
+├── addons/
+│ ├── netfox/
+│ ├── com.heroiclabs.nakama/
+│ ├── phantom_camera/
+│ └── limboai/
+│
+├── client/
+│ ├── ui/
+│ │ ├── ui_kit/
+│ │ └── screens/
+│ │
+│ ├── network/
+│ │ ├── network_manager.gd
+│ │ ├── nakama_client.gd
+│ │ ├── match_handler.gd
+│ │ └── player_sync.gd
+│ │
+│ └── camera/
+│ └── camera_rig.tscn/.gd <- настройка PhantomCamera
+│
+├── shared/
+│ └── game/
+│ ├── unit_data.gd
+│ ├── match_state.gd
+│ ├── ai/
+│ │ ├── trees/ <- .tres BehaviorTree ресурсы
+│ │ │ ├── bt_infantry.tres
+│ │ │ ├── bt_scout.tres
+│ │ │ └── bt_turret.tres
+│ │ ├── tasks/ <- кастомные BTTask
+│ │ │ ├── bt_find_target.gd
+│ │ │ ├── bt_move_to.gd
+│ │ │ ├── bt_attack.gd
+│ │ │ └── bt_flee.gd
+│ │ └── states/ <- LimboHSM состояния
+│ │ ├── unit_idle.gd
+│ │ ├── unit_combat.gd
+│ │ └── unit_retreat.gd
+│ └── units/
+│ └── unit_controller.gd <- BTPlayer + LimboHSM здесь
+```
+
+
+### Границы ответственности
+```
+| Задача                      | Кто решает       | НЕ дублировать в      |
+|-----------------------------|------------------|-----------------------|
+| Auth, аккаунты, сессии      | Nakama           | client/network/       |
+| Matchmaking                 | Nakama           | client/network/       |
+| Leaderboards, storage       | Nakama           | client/network/       |
+| Realtime-транспорт          | Nakama socket    | netfox                |
+| Синхронизация состояния     | netfox           | Nakama                |
+| Rollback / prediction       | netfox           | Nakama                |
+| Интерполяция тиков          | netfox           | UI Kit                |
+| Камера: follow, переходы    | PhantomCamera    | свои скрипты камеры   |
+| Камера: тряска, зоны        | PhantomCamera    | UI Kit                |
+| AI: деревья поведения       | LimboAI (BT)    | свои if/else цепочки  |
+| AI: стейт-машина юнитов     | LimboAI (HSM)   | свои enum-автоматы    |
+| Состояние UI                | UiState          | network/, ai/         |
+| Навигация клавиатурой       | UiNav            | network/, ai/         |
+| Стили и токены              | UiTokens / Theme | network/, ai/         |
+| Анимации UI                 | UiAnim           | network/, ai/         |
+| Отображение данных          | Screen           | network/, ai/         |
+```
+
+### Разделение аддонов по доменам
+Домен Аддон Слой
+────────────────────────────────────────
+Бэкенд Nakama server
+Сеть netfox transport
+Камера PhantomCamera client/3D
+AI LimboAI shared/game
+UI UI Kit (свой) client/ui
+
+Каждый аддон живёт в своём домене.
+Пересечений нет. Связь — через игровой код.
+
+### Правила взаимодействия
+UI Kit не импортирует ничего из addons/ и client/network/.
+client/network/ не импортирует ничего из ui_kit/.
+Связь между сетью и UI — только через Screen.
+Screen получает данные от network_manager и отображает через organisms.
+Сетевые ошибки/статусы передаются в UiState как флаги
+(loading, error, connected, authenticated).
+nakama_client.gd — единственный файл, который вызывает Nakama SDK.
+match_handler.gd — единственный файл, который связывает Nakama и netfox.
+PhantomCamera не влияет на UI — камера и UI на разных слоях.
+LimboAI не импортирует UI Kit — AI решает что делать, UI показывает результат.
+AI-данные попадают в UI через: unit_controller -> signal -> Screen -> Organism.
+
+### Поток данных с AI и камерой
+AI (LimboAI):
+BTPlayer тикает дерево поведения
+-> BTTask решает: атаковать цель
+-> unit_controller испускает signal unit_attacking(target)
+-> Screen слушает, обновляет UI (индикатор цели, статус)
+-> UiState / Organism обновляет визуал
+
+LimboHSM переключает состояние
+-> unit_idle -> unit_combat
+-> signal state_changed("combat")
+-> Screen обновляет HUD (иконка состояния)
+
+Камера (PhantomCamera):
+PhantomCamera3D следит за юнитом
+-> переключение камеры через приоритеты
+-> camera_rig.gd управляет переключением
+-> Screen может запросить смену камеры
+-> camera_rig.set_target(unit)
+
+AI и камера НЕ знают об UI Kit.
+Screen — единственный мост.
+
+### Поток данных
+Авторизация:
+Screen (логин)
+-> nakama_client.authenticate()
+-> Nakama server
+-> session token
+-> UiState.set_flag("authenticated", true)
+-> Screen обновляет UI
+
+Матч:
+Screen (поиск игры)
+-> match_handler.find_match()
+-> Nakama matchmaking
+-> матч найден, игроки подключены
+-> netfox начинает синхронизацию
+-> UiState.set_flag("in_match", true)
+-> Screen переключает на игровой экран
+
+UI Kit НЕ знает о сети и бэкенде. Screen — единственный мост.
 
 ---
 
@@ -164,6 +314,10 @@ PanelContainer:
   active_menu_item: StringName        Данные 3D-сцены
   is_modal_open: bool                 Обработку ввода
   global_flags (loading, error)       Бизнес-логику игры
+  is_connected: bool
+  is_authenticated: bool
+  is_in_match: bool
+  network_error: String
 ```
 
 Поток данных — однонаправленный:
@@ -432,7 +586,15 @@ PostFXLayer (CanvasLayer) — layer=100
 | Opacity noise > 0.07                       | (см. выше)                                              |
 | Opacity vignette > 0.6                     | (см. выше)                                              |
 | Component Factory / UiFactory.create()     | preload().instantiate() с типизацией (см. раздел 10)   |
-
+| import netfox/nakama в ui_kit/             | UI Kit не знает о сети; связь через Screen          |
+| import ui_kit в client/network/            | Сетевой слой не знает об UI; связь через Screen     |
+| Вызов Nakama SDK за пределами nakama_client.gd | Единая точка входа для бэкенда                  |
+| Прямое взаимодействие netfox <-> UI        | netfox -> match_handler -> Screen -> UI             |
+| import PhantomCamera / LimboAI в ui_kit/   | UI Kit не знает о камере и AI                       |
+| if/else цепочки для AI поведения            | BehaviorTree через LimboAI                          |
+| enum-стейт-машина для юнитов               | LimboHSM через LimboAI                              |
+| Свои скрипты камеры (follow, transitions)  | PhantomCamera                                        |
+| AI-логика напрямую обновляет UI            | signal -> Screen -> Organism                         |
 ---
 
 ## 8. ПРАВИЛО 70 / 20 / 10

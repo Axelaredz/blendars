@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://eiwet0sgsm5"
-path="res://.godot/imported/Exo2-SemiBoldItalic.woff2-ffb616871a9fa4d987636a6580ae831e.fontdata"
+path="res://.godot/imported/Exo2-SemiBoldItalic.woff2-a831bf2ee2eb2497fcd15b03476494fc.fontdata"
 
 [deps]
 
-source_file="res://client/ui/fonts/Exo2-SemiBoldItalic.woff2"
-dest_files=["res://.godot/imported/Exo2-SemiBoldItalic.woff2-ffb616871a9fa4d987636a6580ae831e.fontdata"]
+source_file="res://client/ui/ui_kit/assets/fonts/Exo2-SemiBoldItalic.woff2"
+dest_files=["res://.godot/imported/Exo2-SemiBoldItalic.woff2-a831bf2ee2eb2497fcd15b03476494fc.fontdata"]
 
 [params]
 

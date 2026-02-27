@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://exo2regular"
-path="res://.godot/imported/Exo2-Regular.woff2-bbe0510711f24c887fb25587cce88e92.fontdata"
+path="res://.godot/imported/Exo2-Regular.woff2-4d3543307928d3a78d2e56692c505bfb.fontdata"
 
 [deps]
 
-source_file="res://client/ui/fonts/Exo2-Regular.woff2"
-dest_files=["res://.godot/imported/Exo2-Regular.woff2-bbe0510711f24c887fb25587cce88e92.fontdata"]
+source_file="res://client/ui/ui_kit/assets/fonts/Exo2-Regular.woff2"
+dest_files=["res://.godot/imported/Exo2-Regular.woff2-4d3543307928d3a78d2e56692c505bfb.fontdata"]
 
 [params]
 
