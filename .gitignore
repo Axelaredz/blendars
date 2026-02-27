@@ -1,49 +1,33 @@
-# Examples 1:
-(empty — output nothing)
+# Godot 4+ specific ignores
+.godot/
 
-# Example 2 (Project with artifacts):
-# Compiled and build artifacts
-*.pyc
-__pycache__/
-*.o
-*.obj
-dist/
-build/
-target/
+# ============================================
+# Sensitive configuration files
+# ============================================
 
-# Dependencies
-.venv/
-venv/
-node_modules/
-.mypy_cache/
-.pytest_cache/
-.gradle/
+# Environment variables with secrets
+infrastructure/.env
 
-# Logs and temp files
-*.log
-*.tmp
-*.swp
-*.swo
+# Local auth tokens (saved session)
+user://auth.save
 
-# Environment
-.env
-.env.local
-*.env.*
+# SSL certificates and keys
+*.crt
+*.key
+*.pem
 
-# Editors
+# IDE and editor files
 .vscode/
 .idea/
 *.swp
 *.swo
+*~
 
-# System
+# OS specific
 .DS_Store
 Thumbs.db
 
-# Coverage
-coverage/
-htmlcov/
-.coverage
-
-# Original rules preserved
-*.log
+# Build outputs
+export/
+build/
+addons/
