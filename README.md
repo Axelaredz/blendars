@@ -31,7 +31,7 @@ BLEND ARS is a multiplayer game built with Godot engine that uses Nakama server 
 
 ## Important Notice
 
-This project is currently under active development. As such, it is not recommended to copy or use this project in its current state.
+⚠️ This project is currently under active development. As such, it is not recommended to copy or use this project in its current state.
 
 ## Features
 
@@ -64,7 +64,7 @@ This project is currently under active development. As such, it is not recommend
 1. Clone the repository:
    ```bash
    git clone <repository-url>
-   cd instancedock
+   cd blendars
    ```
 
 2. Start the Nakama server:
