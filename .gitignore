@@ -1,35 +1,58 @@
-# Godot 4+ specific ignores
-.godot/
+# Examples 1:
+(empty — output nothing)
 
-# ============================================
-# Sensitive configuration files
-# ============================================
+# Example 2 (Project with artifacts):
+# Compiled and build artifacts
+*.pyc
+__pycache__/
+*.o
+*.obj
+dist/
+build/
+target/
 
-# Environment variables with secrets
-infrastructure/.env
+# Dependencies
+.venv/
+venv/
+node_modules/
+.mypy_cache/
+.pytest_cache/
+.gradle/
 
-# Local auth tokens (saved session)
-user://auth.save
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+*.swo
 
-# SSL certificates and keys
-*.crt
-*.key
-*.pem
+# Environment
+.env
+.env.local
+*.env.*
 
-# IDE and editor files
+# Editors
 .vscode/
 .idea/
 *.swp
 *.swo
-*~
 
-# OS specific
+# System
 .DS_Store
 Thumbs.db
 
+<<<<<<< HEAD
 # Build outputs
 export/
 build/
 addons/
 libgdai-mcp-plugin-godot.linux.template_release.x86_64.so
 client/ui/maaack
+=======
+# Coverage
+coverage/
+htmlcov/
+.coverage
+
+# Original rules preserved
+*.log
+>>>>>>> 751941778eed12102ff813b1aabdc082beb33798
