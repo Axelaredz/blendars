@@ -68,6 +68,16 @@ node_modules/
 .DS_Store
 Thumbs.db
 desktop.ini
+.bash_history
+.bashrc
+.profile
+.bash_logout
+.selected_editor
+.sudo_as_admin_successful
+.wget-hsts
+.cache/
+.config/
+.local/
 
 # ═══════════════════════════════════════════════════════════
 # Coverage & Testing
