@@ -31,3 +31,5 @@ Thumbs.db
 export/
 build/
 addons/
+libgdai-mcp-plugin-godot.linux.template_release.x86_64.so
+client/ui/maaack
