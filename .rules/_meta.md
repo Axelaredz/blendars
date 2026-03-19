@@ -1,6 +1,6 @@
 # Meta
 
-## Version: 1.0 — 2026-03-18
+## Version: 1.1 — 2026-03-18
 ## Generator: DEMIURGOS v19.1
 ## Sizing: Knowledge=L × Surfaces=1 × Extensions=1
 
@@ -28,4 +28,5 @@
 | extensions/mcp_gdai.md | GDAI MCP: allowed ops, error handling |
 
 ## Changelog
-- 2026-03-18 — v1.0 — initial generation by DEMIURGOS v19.1
+  - 2026-03-18 — v1.0 — initial generation by DEMIURGOS v19.1
++ - 2026-03-18 — v1.1 — architecture.md: добавлена Development Topology (гибридная схема ПК + VPS); workflows.md: добавлены Dev Environment, sync-таблицы, troubleshooting

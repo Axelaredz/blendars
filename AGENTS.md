@@ -6,7 +6,7 @@
 - Run headless: `godot --headless --main-pack server.pck`
 
 ## Stack
-Godot 4.7+ (GDScript) · Nakama · Netfox · Blender · Docker · Ubuntu 24.04
+Godot 4.7+ (GDScript) · Nakama · Netfox 1.40.2 · Blender · Docker · Ubuntu 24.04
 
 ## Project Shape
 Online 3D MMORPG. Monorepo: client + dedicated server + shared + infra.
