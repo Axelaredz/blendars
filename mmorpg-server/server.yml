@@ -1,0 +1,49 @@
+# Конфигурация Nakama сервера
+name: "nakama"
+
+server:
+  name: "default"
+  data_dir: "./data"
+  max_message_size_bytes: 1048576
+
+socket:
+  port: 7350
+  tls_cert: ""
+  tls_key: ""
+  server_key: "defaultkey"
+
+database:
+  address: "postgres:password@db:5432/nakama"
+
+logger:
+  level: "INFO"
+  caller: false
+  timestamp_format: "2006-01-02T15:04:05Z07:00"
+
+metrics:
+  port: 9100
+
+session:
+  encryption_key: "defaultencryptionkey"
+  rotation_seconds: 3600
+
+social:
+  vk:
+    app_id: "54454085"  # ЗАМЕНИТЬ на реальный VK App ID
+    app_secret: "2YzfK5U0iNWnkwvuWSlO"  # ЗАМЕНИТЬ на реальный VK App Secret
+
+runtime:
+  path: "./modules"
+  http_key: "some_secure_http_key_for_webhooks"
+  env: {}
+  min_count: 0
+  max_count: 100
+  enabled_runtimes: ["lua", "go"]
+
+console:
+  port: 7351
+  username: "axelaredz"
+  password: "neposeda"
+  ssl: false
+  cert: ""
+  key: ""

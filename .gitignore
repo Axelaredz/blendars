@@ -1,58 +1,85 @@
-# Examples 1:
-(empty — output nothing)
+# ═══════════════════════════════════════════════════════════
+# Godot Engine
+# ═══════════════════════════════════════════════════════════
+.godot/
+.import/
+*.tmp
+*.import
+*.uid
+export/
+build/
 
-# Example 2 (Project with artifacts):
-# Compiled and build artifacts
+# ═══════════════════════════════════════════════════════════
+# Build & Compiled Artifacts
+# ═══════════════════════════════════════════════════════════
 *.pyc
 __pycache__/
 *.o
 *.obj
+*.so
+*.dll
+*.dylib
 dist/
-build/
 target/
+*.exe
 
+# ═══════════════════════════════════════════════════════════
 # Dependencies
+# ═══════════════════════════════════════════════════════════
 .venv/
 venv/
 node_modules/
 .mypy_cache/
 .pytest_cache/
 .gradle/
+.gdplug/
 
-# Logs and temp files
+# ═══════════════════════════════════════════════════════════
+# Logs & Temp Files
+# ═══════════════════════════════════════════════════════════
 *.log
 *.tmp
 *.swp
 *.swo
+*~
 
-# Environment
+# ═══════════════════════════════════════════════════════════
+# Environment & Secrets
+# ═══════════════════════════════════════════════════════════
 .env
 .env.local
 *.env.*
+*.key
+*.pem
+*.crt
 
+# ═══════════════════════════════════════════════════════════
 # Editors
+# ═══════════════════════════════════════════════════════════
 .vscode/
 .idea/
+*.sublime-*
 *.swp
 *.swo
 
+# ═══════════════════════════════════════════════════════════
 # System
+# ═══════════════════════════════════════════════════════════
 .DS_Store
 Thumbs.db
+desktop.ini
 
-<<<<<<< HEAD
-# Build outputs
-export/
-build/
-addons/
-libgdai-mcp-plugin-godot.linux.template_release.x86_64.so
-client/ui/maaack
-=======
-# Coverage
+# ═══════════════════════════════════════════════════════════
+# Coverage & Testing
+# ═══════════════════════════════════════════════════════════
 coverage/
 htmlcov/
 .coverage
+*.gcno
+*.gcda
 
-# Original rules preserved
-*.log
->>>>>>> 751941778eed12102ff813b1aabdc082beb33798
+# ═══════════════════════════════════════════════════════════
+# Docker & Infrastructure
+# ═══════════════════════════════════════════════════════════
+infrastructure/ssl/
+*.local.yml.override

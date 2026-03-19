@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://bafjkuhl681hm"]
+
+[node name="Main" type="Node2D"]
+
+[node name="TestNetwork" type="Control" parent="."]
+filename = "res://core/test_network.tscn"
+owner = "."

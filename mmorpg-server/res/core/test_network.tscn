@@ -1,0 +1,56 @@
+[gd_scene load_steps=4 format=3 uid="uid://bafjkuhl681hl"]
+
+[sub_resource type="Theme" id="theme_1"]
+theme_items/font_sizes/normal_font_size = 16
+theme_items/styles/default = preload("res://builtin/button_style.tres")
+
+[node name="TestNetwork" type="Control"]
+size = Vector2(800, 600)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="StatusLabel" type="Label" parent="VBoxContainer"]
+text = "Статус: Не подключен"
+horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+
+[node name="ConnectButton" type="Button" parent="VBoxContainer"]
+text = "Подключиться"
+flat = false
+
+[node name="JoinMatchButton" type="Button" parent="VBoxContainer"]
+text = "Присоединиться к матчу"
+disabled = true
+flat = false
+
+[node name="SendDataButton" type="Button" parent="VBoxContainer"]
+text = "Отправить тестовые данные"
+disabled = true
+flat = false
+
+[node name="DisconnectButton" type="Button" parent="VBoxContainer"]
+text = "Отключиться"
+flat = false
+
+[node name="Spacer" type="VSeparator" parent="VBoxContainer"]
+custom_minimum_size.y = 20.0
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+text = "Лог событий:"
+
+[node name="LogText" type="RichTextLabel" parent="VBoxContainer"]
+custom_minimum_size = Vector2(750, 300)
+scroll_following = true
+bbcode_enabled = true
+autowrap_mode = TextServer.AUTOWRAP_OFF
+
+[connection signal="pressed" from="ConnectButton" to="TestNetwork" method="_on_connect_button_pressed"]
+[connection signal="pressed" from="JoinMatchButton" to="TestNetwork" method="_on_join_match_button_pressed"]
+[connection signal="pressed" from="SendDataButton" to="TestNetwork" method="_on_send_data_button_pressed"]
+[connection signal="pressed" from="DisconnectButton" to="TestNetwork" method="_on_disconnect_button_pressed"]
